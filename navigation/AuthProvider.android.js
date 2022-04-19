@@ -1,4 +1,4 @@
-import React, {createContext, useState} from 'react';
+import React, { createContext, useState } from 'react';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { GoogleSignin } from '@react-native-community/google-signin';
@@ -8,7 +8,7 @@ import CustomAlert from '../components/CustomAlert';
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   // signOuts = async () => {
@@ -19,7 +19,7 @@ export const AuthProvider = ({children}) => {
   //     await auth().signOut();
   //   } catch (error) {
   //     console.error(error);
-      
+
   //   }
   // };
 
@@ -27,16 +27,16 @@ export const AuthProvider = ({children}) => {
     console.log(error);
     return (
       <View style={styles.inputContainer}>
-      <CustomAlert 
-          modalVisible={modalVisible} 
+        <CustomAlert
+          modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           title={'Message'}
-          message={error} 
+          message={error}
           buttons={[{
             text: 'Ok',
-            func: () => {console.log('Yes Pressed')}
+            func: () => { console.log('Yes Pressed') }
           }]}
-      />
+        />
 
       </View>
     );
@@ -48,57 +48,57 @@ export const AuthProvider = ({children}) => {
         user,
         setUser,
         googleLogin: async () => {
-          
+
           try {
             // Get the users ID token
-            const Token  = await GoogleSignin.signIn();
-            const {idToken} =  Token;
+            const Token = await GoogleSignin.signIn();
+            const { idToken } = Token;
             console.log("Processing");
             console.log("ok");
-            
+
             // Create a Google credential with the token
             const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-            
-            
+
+
             console.log("test");
             console.log(Token.user.name);
             console.log(Token.user.photo);
             console.log(Token.user.email);
             console.log("Oh naa");
 
-            AsyncStorage.setItem('userPrivilege',Token.user.name);
-            AsyncStorage.setItem('userPrivilegePhoto',Token.user.photo);
-            AsyncStorage.setItem('userPrivilegeEmail',Token.user.email);
-          
+            AsyncStorage.setItem('userPrivilege', Token.user.name);
+            AsyncStorage.setItem('userPrivilegePhoto', Token.user.photo);
+            AsyncStorage.setItem('userPrivilegeEmail', Token.user.email);
+
             // Sign-in the user with the credential
             await auth().signInWithCredential(googleCredential)
 
-            // Use it only when user Sign's up, 
-            // so create different social signup function
-            // .then(() => {
-            //   //Once the user creation has happened successfully, we can add the currentUser into firestore
-            //   //with the appropriate details.
-            //   // console.log('current User', auth().currentUser);
-            //   firestore().collection('users').doc(auth().currentUser.uid)
-            //   .set({
-            //       fname: '',
-            //       lname: '',
-            //       email: auth().currentUser.email,
-            //       createdAt: firestore.Timestamp.fromDate(new Date()),
-            //       userImg: null,
-            //   })
-            //   //ensure we catch any errors at this stage to advise us if something does go wrong
-            //   .catch(error => {
-            //       console.log('Something went wrong with added user to firestore: ', error);
-            //   })
-            // })
-            //we need to catch the whole sign up process if it fails too.
-            
-            
-            .catch(error => {
+              // Use it only when user Sign's up, 
+              // so create different social signup function
+              // .then(() => {
+              //   //Once the user creation has happened successfully, we can add the currentUser into firestore
+              //   //with the appropriate details.
+              //   // console.log('current User', auth().currentUser);
+              //   firestore().collection('users').doc(auth().currentUser.uid)
+              //   .set({
+              //       fname: '',
+              //       lname: '',
+              //       email: auth().currentUser.email,
+              //       createdAt: firestore.Timestamp.fromDate(new Date()),
+              //       userImg: null,
+              //   })
+              //   //ensure we catch any errors at this stage to advise us if something does go wrong
+              //   .catch(error => {
+              //       console.log('Something went wrong with added user to firestore: ', error);
+              //   })
+              // })
+              //we need to catch the whole sign up process if it fails too.
+
+
+              .catch(error => {
                 console.log('Something went wrong with sign up: ', error);
-            });
-          } catch(error) {
+              });
+          } catch (error) {
             // console.log('Something went wrong with sign up: ', error);
             ErrorHandling(error);
           }
@@ -110,13 +110,13 @@ export const AuthProvider = ({children}) => {
             await GoogleSignin.revokeAccess();
             await GoogleSignin.signOut();
             setUser({ user: null });
-            AsyncStorage.setItem('userPrivilege','');
+            AsyncStorage.setItem('userPrivilege', '');
             // AsyncStorage.setItem('userPrivilegePhoto','https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg');
             await auth().signOut();
             console.log("sa try");
 
-            
-            
+
+
           } catch (e) {
             console.log(e);
             console.log("sa catch");
@@ -127,6 +127,12 @@ export const AuthProvider = ({children}) => {
             // await auth().signOut();
           }
         },
+        // testAlert: async () => {
+        //   console.log("Test alert");
+        //   return (
+        //     <View><Text>fasfasf</Text></View>
+        //   )
+        // }
       }}>
       {children}
     </AuthContext.Provider>
