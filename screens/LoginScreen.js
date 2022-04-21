@@ -8,7 +8,8 @@ import {
   StyleSheet,
   ScrollView,
   ImageBackground,
-  LogBox
+  LogBox,
+  Alert
 } from 'react-native';
 import CustomAlert from '../components/CustomAlert';
 import { AuthContext } from '../navigation/AuthProvider';
@@ -19,6 +20,11 @@ import NetInfo from "@react-native-community/netinfo";
 import {
   GoogleSigninButton,
 } from '@react-native-community/google-signin';
+import PINCode, {
+  hasUserSetPinCode,
+  resetPinCodeInternalStates,
+  deleteUserPinCode,
+} from "@haskkor/react-native-pincode";
 import { Icon } from 'style-components';
 
 
@@ -29,6 +35,7 @@ const LoginScreen = ({ navigation }) => {
   const [fingerprint, setFprint] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [internetCon, setNet] = useState(true);
+  const [PinCodeVisible, setPin] = useState({ PINCodeStatus: "choose", showPinLock: false });
 
   React.useEffect(() => {
     LogBox.ignoreLogs(['Possible Unhandled Promise Rejection']);
@@ -64,6 +71,64 @@ const LoginScreen = ({ navigation }) => {
     });
   }, [])
 
+  /* PinCode */
+
+  function _showChoosePinLock() {
+    console.log("Alert should pop upaaa");
+    setPin({ PINCodeStatus: "choose", showPinLock: true });
+  };
+
+  async function _finishProcess() {
+    console.log("Alert should pop upaaa");
+    googleLogin();
+
+    // if (PinCodeVisible.PINCodeStatus === "enter") {
+    //   console.log(PinCodeVisible.PINCodeStatus);
+    //   console.log("Enterssss");
+    //   googleLogin();
+
+    // }
+    // else {
+    //   console.log(PinCodeVisible.PINCodeStatus);
+    //   console.log("Choose");
+    //   setPin({ showPinLock: false });
+    // }
+  };
+
+  async function _showEnterPinLock() {
+    console.log("_showEnterPinLock");
+    const hasPin = await hasUserSetPinCode();
+    if (hasPin) {
+      console.log("_showEnterPinLock1");
+      setPin({ PINCodeStatus: "enter", showPinLock: true });
+    } else {
+      console.log("_showEnterPinLock2");
+      Alert.alert(null, "You have not set your pin.", [
+        {
+          title: "Ok",
+          onPress: () => {
+            // do nothing
+          },
+        },
+      ]);
+    }
+  };
+  async function _clearPin() {
+    await deleteUserPinCode();
+    await resetPinCodeInternalStates();
+    Alert.alert(null, "You have cleared your pin.", [
+      {
+        title: "Ok",
+        onPress: () => {
+          // do nothing
+        },
+      },
+    ]);
+  };
+
+
+  /* End of PinCode module  */
+
 
   function biometric() {
     TouchID.authenticate('Fingerprint') // Show the Touch ID prompt
@@ -96,83 +161,120 @@ const LoginScreen = ({ navigation }) => {
   }
   return (
     <ScrollView style={styles.container} >
-      <ImageBackground source={require('../assets/images/login/login-background.png')} style={styles.backgroundImage}   >
-        <View style={{ alignItems: 'center' }}>
-          <Image source={require('../assets/images/login/finds-logo.png')} style={styles.LogoImageStyle}></Image>
-        </View>
+      {PinCodeVisible.showPinLock === true ? (
+        <ScrollView style={styles.Pincontainer} >
+          {/* <ScrollView style={{ width: "100%", height: "100%", backgroundColor: "#F5FCFF", flex: 1, resizeMode: "contain" }} > */}
 
-        <Text style={{ ...FONTS.h3, color: COLORS.white }}>{state?.username}</Text>
-        {Platform.OS === 'android' ? (
-          <View style={{ marginTop: `30%`, alignItems: 'center' }}>
-            <GoogleSigninButton
-              style={{ width: 252, height: 58 }}
-              size={GoogleSigninButton.Size.Wide}
-              color={GoogleSigninButton.Color.Dark}
-              onPress={() => {
-                if (fingerprint === true) {
-                  googleLogin();
-                }
-                else {
-                  console.log("Alert should pop up");
-                  setModalVisible(true);
-                }
-              }
-              }
-            />
-            <CustomAlert
-              modalVisible={modalVisible}
-              setModalVisible={setModalVisible}
-              title={'Message'}
-              message={'Please enable your Touch ID/PIN to your device'}
-              buttons={[{
-                text: 'Ok',
-                func: () => { console.log('Yes Pressed') }
-              }]}
-            />
-          </View>
-        ) : null}
-        {fingerprint === true ?
-          <TouchableOpacity style={{ alignItems: 'center' }} activeOpacity={0.5} onPress={biometric}>
-            <Image
-              source={require('../assets/fingerprint/f-icon.png')}
-              style={styles.ImageIconStyle}
-            />
-          </TouchableOpacity>
-          :
-          <View>
-            <CustomAlert
-              modalVisible={modalVisible}
-              setModalVisible={setModalVisible}
-              title={'Message'}
-              message={'Please enable your Touch ID/PIN to your device'}
-              buttons={[{
-                text: 'Ok',
-                func: () => { console.log('Yes Pressed') }
-              }]}
-            />
-            <View>
-              <TouchableOpacity style={{ alignItems: 'center' }} activeOpacity={0.5} onPress={() => setModalVisible(true)}>
-                <Image
-                  source={require('../assets/fingerprint/f-icon-gray.png')}
-                  style={styles.ImageIconStyle}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        }
-        {internetCon === false ?
-          <CustomAlert
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            title={'Message'}
-            message={'Your device appears to have no internet connectivity. Please check your connection settings and try again'}
-            buttons={[{
-              text: 'Retry',
-              func: () => { checkInternetConnection(); }
-            }]}
+
+
+          <PINCode
+            // modalVisible={modalVisible}
+            status={PinCodeVisible.PINCodeStatus}
+            touchIDDisabled={true}
+            finishProcess={() => _finishProcess()}
+            timeLocked={5000}
+          // style={{ width: null, height: null, backgroundColor: "#F5FCFF", flex: 1, resizeMode: "contain", marginTop: 20 }}
           />
-          : null}
-      </ImageBackground>
+        </ScrollView>
+      ) :
+        <ImageBackground source={require('../assets/images/login/login-background.png')} style={styles.backgroundImage}   >
+          <View style={{ alignItems: 'center' }}>
+            <Image source={require('../assets/images/login/finds-logo.png')} style={styles.LogoImageStyle}></Image>
+          </View>
+
+
+          <Text style={{ ...FONTS.h3, color: COLORS.white }}>{state?.username}</Text>
+          {Platform.OS === 'android' ? (
+            <View style={{ marginTop: `30%`, alignItems: 'center' }}>
+              <GoogleSigninButton
+                style={{ width: 252, height: 58 }}
+                size={GoogleSigninButton.Size.Wide}
+                color={GoogleSigninButton.Color.Dark}
+                onPress={() => {
+                  googleLogin();
+                  // const hasPin = await hasUserSetPinCode();
+                  // if (fingerprint === true) {
+                  //   googleLogin();
+                  // }
+                  // else if (!hasPin) {
+                  //   console.log("No pin");
+                  //   _showChoosePinLock();
+                  // }
+                  // else if (hasPin && fingerprint === false) {
+                  //   googleLogin();
+                  //   // _showEnterPinLock();
+                  // }
+                  // else {
+                  //   console.log("fingerprintt function");
+                  //   // _showEnterPinLock();
+
+                  // }
+                }
+                }
+              />
+              <CustomAlert
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                title={'Message'}
+                message={'Please enable your Touch ID/PIN in your device'}
+                buttons={[{
+                  text: 'Ok',
+                  func: () => { console.log('Yes Pressed') }
+                }]}
+              />
+            </View>
+          ) : null}
+          {fingerprint === true ?
+            <TouchableOpacity style={{ alignItems: 'center' }} activeOpacity={0.5} onPress={biometric}>
+              <Image
+                source={require('../assets/fingerprint/f-icon.png')}
+                style={styles.ImageIconStyle}
+              />
+            </TouchableOpacity>
+            :
+            <View>
+              <CustomAlert
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                title={'Message'}
+                message={'Please enable your Touch ID/PIN in your device'}
+                buttons={[{
+                  text: 'Ok',
+                  func: () => { console.log('Yes Pressed') }
+                }]}
+              />
+              <View>
+                <TouchableOpacity style={{ alignItems: 'center' }} activeOpacity={0.5} onPress={() => setModalVisible(true)}>
+                  <Image
+                    source={require('../assets/fingerprint/f-icon-gray.png')}
+                    style={styles.ImageIconStyle}
+                  />
+                </TouchableOpacity>
+              </View>
+              {/* <View>
+                <TouchableOpacity style={{ alignItems: 'center' }} activeOpacity={0.5} onPress={() => _clearPin()}>
+                  <Image
+                    source={require('../assets/fingerprint/f-icon-gray.png')}
+                    style={styles.ImageIconStyle}
+                  />
+                </TouchableOpacity>
+              </View> */}
+            </View>
+          }
+          {internetCon === false ?
+            <CustomAlert
+              modalVisible={modalVisible}
+              setModalVisible={setModalVisible}
+              title={'Message'}
+              message={'Your device appears to have no internet connectivity. Please check your connection settings and try again'}
+              buttons={[{
+                text: 'Retry',
+                func: () => { checkInternetConnection(); }
+              }]}
+            />
+            : null}
+        </ImageBackground>
+      }
     </ScrollView>
 
   );
@@ -184,6 +286,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+  },
+  Pincontainer: {
+    flex: 1,
+    paddingTop: `50%`,
+    flexDirection: 'column',
+    backgroundColor: "#F5FCFF",
   },
   logoImage: {
     flex: 1,
