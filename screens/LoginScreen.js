@@ -47,10 +47,15 @@ const LoginScreen = ({ navigation }) => {
       .then(biometryType => {
         if (biometryType === 'TouchID') {
           setFprint(true);
+          // AsyncStorage.setItem('FingerprintAvailable', true);
+          AsyncStorage.setItem('FingerprintAvailable', JSON.stringify(true))
+
         } else if (biometryType === 'FaceID') {
           console.log("supported by IOS ");
         } else if (biometryType === true) {
           setFprint(true);
+          // AsyncStorage.setItem('FingerprintAvailable', true);
+          AsyncStorage.setItem('FingerprintAvailable', JSON.stringify(true))
           console.log("supported by Android");
         }
         else {
@@ -81,18 +86,6 @@ const LoginScreen = ({ navigation }) => {
   async function _finishProcess() {
     console.log("Alert should pop upaaa");
     googleLogin();
-
-    // if (PinCodeVisible.PINCodeStatus === "enter") {
-    //   console.log(PinCodeVisible.PINCodeStatus);
-    //   console.log("Enterssss");
-    //   googleLogin();
-
-    // }
-    // else {
-    //   console.log(PinCodeVisible.PINCodeStatus);
-    //   console.log("Choose");
-    //   setPin({ showPinLock: false });
-    // }
   };
 
   async function _showEnterPinLock() {
@@ -163,17 +156,12 @@ const LoginScreen = ({ navigation }) => {
     <ScrollView style={styles.container} >
       {PinCodeVisible.showPinLock === true ? (
         <ScrollView style={styles.Pincontainer} >
-          {/* <ScrollView style={{ width: "100%", height: "100%", backgroundColor: "#F5FCFF", flex: 1, resizeMode: "contain" }} > */}
-
-
-
           <PINCode
-            // modalVisible={modalVisible}
             status={PinCodeVisible.PINCodeStatus}
             touchIDDisabled={true}
             finishProcess={() => _finishProcess()}
             timeLocked={5000}
-          // style={{ width: null, height: null, backgroundColor: "#F5FCFF", flex: 1, resizeMode: "contain", marginTop: 20 }}
+
           />
         </ScrollView>
       ) :

@@ -13,6 +13,7 @@ import {
 
 import { PriceAlert, TransactionHistory } from "../components"
 import { dummyData, COLORS, SIZES, FONTS, icons, images } from '../constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import PINCode, {
     hasUserSetPinCode,
     resetPinCodeInternalStates,
@@ -23,7 +24,7 @@ const HomeScreen = ({ navigation }) => {
 
     const [trending, setTrending] = React.useState(dummyData.trendingCurrencies)
     const [transactionHistory, setTransactionHistory] = React.useState(dummyData.transactionHistory)
-    const [fingerprint, setFprint] = useState(true);
+    const [fingerprint, setFprint] = useState(false);
     const [PinCodeVisible, setPin] = useState({ PINCodeStatus: "choose", showPinLock: false });
 
     React.useEffect(() => {
@@ -35,6 +36,20 @@ const HomeScreen = ({ navigation }) => {
         LogBox.ignoreLogs(['Can\'t perform a React state update '])
         LogBox.ignoreLogs(['ViewPropTypes will be removed from React Native.'])
         pinCode();
+
+        AsyncStorage.getItem('FingerprintAvailable', (err, value) => {
+
+            if (value) {
+                setFprint(true);
+
+                console.log("fingerprint kay trueeeeeeeeee");
+            } else {
+
+                JSON.parse(value) // boolean false
+                console.log(value);
+                console.log("fingerprint kay falseeee");
+            }
+        })
     }, [])
 
 
@@ -45,7 +60,11 @@ const HomeScreen = ({ navigation }) => {
         console.log("----------------------------------------------------------ok");
         console.log(hasUserSetPinCode);
 
-        if (!hasPin) {
+        if (fingerprint === true) {
+            setPin({ showPinLock: false });
+        }
+
+        else if (!hasPin) {
             console.log("No pin");
             _showChoosePinLock();
         }

@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  Alert
 } from 'react-native';
 import FormButton from '../components/FormButton';
 import { AuthContext } from '../navigation/AuthProvider';
@@ -15,6 +16,11 @@ import firestore from '@react-native-firebase/firestore';
 import PostCard from '../components/PostCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FONTS, COLORS } from '../constants';
+import PINCode, {
+  hasUserSetPinCode,
+  resetPinCodeInternalStates,
+  deleteUserPinCode,
+} from "@haskkor/react-native-pincode";
 
 const ProfileScreen = ({ navigation, route }) => {
   const { user, logout } = useContext(AuthContext);
@@ -77,6 +83,19 @@ const ProfileScreen = ({ navigation, route }) => {
 
   const handleDelete = () => { };
 
+  async function _clearPin() {
+    await deleteUserPinCode();
+    await resetPinCodeInternalStates();
+    Alert.alert(null, "You have cleared your pin.", [
+      {
+        title: "Ok",
+        onPress: () => {
+          // do nothing
+        },
+      },
+    ]);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <ScrollView
@@ -105,6 +124,12 @@ const ProfileScreen = ({ navigation, route }) => {
         <View style={styles.userBtnWrapper}>
           <TouchableOpacity style={styles.userBtn} onPress={() => logout()}>
             <Text style={styles.userBtnTxt}>Forgot your PIN</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.userBtnWrapper}>
+          <TouchableOpacity style={styles.userBtn} onPress={() => _clearPin()}>
+            <Text style={styles.userBtnTxt}>Clear PIN</Text>
           </TouchableOpacity>
         </View>
 
