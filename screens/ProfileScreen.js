@@ -90,8 +90,10 @@ const ProfileScreen = ({ navigation, route }) => {
       {
         title: "Ok",
         onPress: () => {
-          // do nothing
+          logout();
         },
+
+
       },
     ]);
   };
@@ -118,12 +120,6 @@ const ProfileScreen = ({ navigation, route }) => {
         <View style={styles.userBtnWrapper}>
           <TouchableOpacity style={styles.userBtn} onPress={() => logout()}>
             <Text style={styles.userBtnTxt}>Logout</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.userBtnWrapper}>
-          <TouchableOpacity style={styles.userBtn} onPress={() => logout()}>
-            <Text style={styles.userBtnTxt}>Forgot your PIN</Text>
           </TouchableOpacity>
         </View>
 

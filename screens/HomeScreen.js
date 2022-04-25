@@ -26,7 +26,8 @@ const HomeScreen = ({ navigation }) => {
     const [trending, setTrending] = React.useState(dummyData.trendingCurrencies)
     const [transactionHistory, setTransactionHistory] = React.useState(dummyData.transactionHistory)
     const [fingerprint, setFprint] = useState(false);
-    const [PinCodeVisible, setPin] = useState({ PINCodeStatus: "choose", showPinLock: false });
+    // const [PinCodeVisible, setPin] = useState({ PINCodeStatus: "choose", showPinLock: false });
+    const [pinCodeVisible, setPin] = useState({ PINCodeStatus: "choose", showPinLock: true });
 
     React.useEffect(() => {
         LogBox.ignoreLogs(['Found screens with the same name nested'])
@@ -61,9 +62,11 @@ const HomeScreen = ({ navigation }) => {
         console.log("----------------------------------------------------------ok");
         console.log(hasUserSetPinCode);
 
+
         if (fingerprint === true) {
             console.log("No pin11111111111111111111");
-            setPin({ showPinLock: false });
+            // setPin({ showPinLock: false });
+            setPin({ ...pinCodeVisible, showPinLock: false });
         }
 
         else if (!hasPin) {
@@ -73,7 +76,12 @@ const HomeScreen = ({ navigation }) => {
         else if (hasPin) {
 
             console.log("has pinn3333333333333");
-            _showEnterPinLock();
+            // _showEnterPinLock();
+            // setPin({ ...pinCodeVisible, showPinLock: true });
+            // PINCodeStatus: "choose"
+
+            setPin({ PINCodeStatus: "enter", showPinLock: true });
+
         }
         else {
             console.log("does not have pin");
@@ -313,24 +321,22 @@ const HomeScreen = ({ navigation }) => {
         )
     }
     return (
-        <View style={styles.container} >
-            {fingerprint === false && PinCodeVisible.showPinLock === true ? (
+        <View style={styles.container}>
+            {(pinCodeVisible.showPinLock && (
                 <PINCode
-                    // modalVisible={modalVisible}
-                    status={PinCodeVisible.PINCodeStatus}
-                    touchIDDisabled={true}
                     finishProcess={() => _finishProcess()}
-                    timeLocked={5000}
+                    status={pinCodeVisible.PINCodeStatus}
+                    timeLocked={12000}
+                    touchIDDisabled={true}
                 />
-            )
-                :
-                (<ScrollView style={styles.container}>
-                    {/* <Text>This text will show before the true statement above</Text> */}
-                    {renderHeader()}
-                    {renderAlert()}
-                    {renderNotice()}
-                    {renderTransactionHistory()}
-                </ScrollView>)}
+            )) || (
+                    <ScrollView style={styles.container}>
+                        {renderHeader()}
+                        {renderAlert()}
+                        {renderNotice()}
+                        {renderTransactionHistory()}
+                    </ScrollView>
+                )}
         </View>
     )
 }
