@@ -23,24 +23,24 @@ export const AuthProvider = ({ children }) => {
   //   }
   // };
 
-  const ErrorHandling = (error) => {
-    console.log(error);
-    return (
-      <View style={styles.inputContainer}>
-        <CustomAlert
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          title={'Message'}
-          message={error}
-          buttons={[{
-            text: 'Ok',
-            func: () => { console.log('Yes Pressed') }
-          }]}
-        />
+  // const ErrorHandling = (error) => {
+  //   console.log(error);
+  //   return (
+  //     <View style={styles.inputContainer}>
+  //       <CustomAlert
+  //         modalVisible={modalVisible}
+  //         setModalVisible={setModalVisible}
+  //         title={'Message'}
+  //         message={error}
+  //         buttons={[{
+  //           text: 'Ok',
+  //           func: () => { console.log('Yes Pressed') }
+  //         }]}
+  //       />
 
-      </View>
-    );
-  };
+  //     </View>
+  //   );
+  // };
 
   return (
     <AuthContext.Provider
@@ -104,7 +104,7 @@ export const AuthProvider = ({ children }) => {
               });
           } catch (error) {
             // console.log('Something went wrong with sign up: ', error);
-            ErrorHandling(error);
+            // ErrorHandling(error);
           }
         },
         logout: async () => {

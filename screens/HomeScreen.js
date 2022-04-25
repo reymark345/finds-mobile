@@ -14,6 +14,7 @@ import {
 import { PriceAlert, TransactionHistory } from "../components"
 import { dummyData, COLORS, SIZES, FONTS, icons, images } from '../constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import TouchID from 'react-native-touch-id';
 import PINCode, {
     hasUserSetPinCode,
     resetPinCodeInternalStates,
@@ -37,19 +38,19 @@ const HomeScreen = ({ navigation }) => {
         LogBox.ignoreLogs(['ViewPropTypes will be removed from React Native.'])
         pinCode();
 
-        AsyncStorage.getItem('FingerprintAvailable', (err, value) => {
+        TouchID.isSupported()
+            .then(biometryType => {
+                if (biometryType === 'TouchID' || biometryType === true) {
+                    setFprint(true);
+                    // AsyncStorage.setItem('FingerprintAvailable', true);
+                    AsyncStorage.setItem('FingerprintAvailable', JSON.stringify(true))
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                console.log("Please enable your Fingerprint/touchID to your device");
+            });
 
-            if (value) {
-                setFprint(true);
-
-                console.log("fingerprint kay trueeeeeeeeee");
-            } else {
-
-                JSON.parse(value) // boolean false
-                console.log(value);
-                console.log("fingerprint kay falseeee");
-            }
-        })
     }, [])
 
 
@@ -61,16 +62,17 @@ const HomeScreen = ({ navigation }) => {
         console.log(hasUserSetPinCode);
 
         if (fingerprint === true) {
+            console.log("No pin11111111111111111111");
             setPin({ showPinLock: false });
         }
 
         else if (!hasPin) {
-            console.log("No pin");
+            console.log("No pin2222222222222");
             _showChoosePinLock();
         }
         else if (hasPin) {
 
-            console.log("has pinn");
+            console.log("has pinn3333333333333");
             _showEnterPinLock();
         }
         else {
@@ -311,37 +313,33 @@ const HomeScreen = ({ navigation }) => {
         )
     }
     return (
-        <ScrollView>
-
-            {PinCodeVisible.showPinLock === true ? (
-                <ScrollView style={styles.Pincontainer} >
-                    {/* <ScrollView style={{ width: "100%", height: "100%", backgroundColor: "#F5FCFF", flex: 1, resizeMode: "contain" }} > */}
-
-                    <PINCode
-                        // modalVisible={modalVisible}
-                        status={PinCodeVisible.PINCodeStatus}
-                        touchIDDisabled={true}
-                        finishProcess={() => _finishProcess()}
-                        timeLocked={5000}
-                    // style={{ width: null, height: null, backgroundColor: "#F5FCFF", flex: 1, resizeMode: "contain", marginTop: 20 }}
-                    />
-                </ScrollView>
-            ) :
-                <View style={{ flex: 1, paddingBottom: 130 }}>
+        <View style={styles.container} >
+            {fingerprint === false && PinCodeVisible.showPinLock === true ? (
+                <PINCode
+                    // modalVisible={modalVisible}
+                    status={PinCodeVisible.PINCodeStatus}
+                    touchIDDisabled={true}
+                    finishProcess={() => _finishProcess()}
+                    timeLocked={5000}
+                />
+            )
+                :
+                (<ScrollView style={styles.container}>
+                    {/* <Text>This text will show before the true statement above</Text> */}
                     {renderHeader()}
                     {renderAlert()}
                     {renderNotice()}
                     {renderTransactionHistory()}
-                </View>}
-        </ScrollView>
+                </ScrollView>)}
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+        // alignItems: 'center',
+        // justifyContent: 'center'
     },
     Pincontainer: {
         flex: 1,
