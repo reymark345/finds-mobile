@@ -299,7 +299,7 @@ const HomeScreen = ({ navigation }) => {
                     style={{
                         marginTop: SIZES.base
                     }}
-                    onPress={() => console.log("Learn More")}
+                    onPress={() => navigation.navigate("textblast")}
                 >
                     <Text style={{
                         textDecorationLine: 'underline',

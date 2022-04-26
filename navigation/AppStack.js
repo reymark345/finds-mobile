@@ -16,6 +16,7 @@ import TevDetail from '../screens/TevDetail';
 import Transaction from '../screens/Transaction';
 import NetInfo from "@react-native-community/netinfo";
 import CustomAlert from '../components/CustomAlert';
+import TextBlastScreen from '../screens/TextBlastScreen';
 
 
 const Stack = createStackNavigator();
@@ -94,6 +95,25 @@ const FeedStack = ({ navigation }) => (
     <Stack.Screen
       name="tev"
       component={TevDetail}
+      options={{
+        title: '',
+        headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: '#2e64e515',
+          shadowColor: '#2e64e515',
+          elevation: 0,
+        },
+        headerBackTitleVisible: false,
+        headerBackImage: () => (
+          <View style={{ marginLeft: 15 }}>
+            <Ionicons name="arrow-back" size={25} color="#2e64e5" />
+          </View>
+        ),
+      }}
+    />
+    <Stack.Screen
+      name="textblast"
+      component={TextBlastScreen}
       options={{
         title: '',
         headerTitleAlign: 'center',

@@ -123,7 +123,7 @@ export const AuthProvider = ({ children }) => {
 
           } catch (e) {
             console.log(e);
-            console.log("sa catch");
+            console.log("Please contact administrator");
             // AsyncStorage.setItem('userPrivilege','');
             // await GoogleSignin.revokeAccess();
             // // await GoogleSignin.signOut();
