@@ -36,6 +36,7 @@ const LoginScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [internetCon, setNet] = useState(true);
   const [PinCodeVisible, setPin] = useState({ PINCodeStatus: "choose", showPinLock: false });
+  const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
     LogBox.ignoreLogs(['Possible Unhandled Promise Rejection']);
@@ -74,6 +75,7 @@ const LoginScreen = ({ navigation }) => {
         setState({ username: variable })
       }
     });
+    fetchPosts();
   }, [])
 
   /* PinCode */
@@ -82,6 +84,7 @@ const LoginScreen = ({ navigation }) => {
     console.log("Alert should pop upaaa");
     setPin({ PINCodeStatus: "choose", showPinLock: true });
   };
+
 
   async function _finishProcess() {
     console.log("Alert should pop upaaa");
@@ -122,6 +125,54 @@ const LoginScreen = ({ navigation }) => {
 
   /* End of PinCode module  */
 
+
+  const fetchPosts = async () => {
+    try {
+      const list = [];
+
+      await firestore()
+        .collection('posts')
+        .orderBy('postTime', 'desc')
+        .get()
+        .then((querySnapshot) => {
+          // console.log('Total Posts: ', querySnapshot.size);
+
+          querySnapshot.forEach((doc) => {
+            const {
+              userId,
+              post,
+              postImg,
+              postTime,
+              likes,
+              comments,
+            } = doc.data();
+            list.push({
+              id: doc.id,
+              userId,
+              userName: 'Test Name',
+              userImg:
+                'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+              postTime: postTime,
+              post,
+              postImg,
+              liked: false,
+              likes,
+              comments,
+            });
+          });
+        });
+
+      setPosts(list);
+
+      if (loading) {
+        setLoading(false);
+      }
+
+      console.log('Posts: ', posts);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   function biometric() {
     TouchID.authenticate('Fingerprint') // Show the Touch ID prompt
