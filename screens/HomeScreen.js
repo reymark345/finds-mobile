@@ -387,7 +387,7 @@ const HomeScreen = ({ navigation }) => {
         <SafeAreaView style={{ flex: 1 }}>
             {loading ? (
                 <ScrollView
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, marginTop: `10%` }}
                     contentContainerStyle={{ alignItems: 'center' }}>
                     <SkeletonPlaceholder>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
