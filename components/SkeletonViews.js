@@ -1,35 +1,56 @@
 import React from 'react';
 import {
-    StyleSheet,
     View,
-    SafeAreaView,
-    Text,
-    ScrollView,
-    FlatList,
-    TouchableOpacity,
-    Image,
-    ImageBackground,
-    Animated,
-    LogBox
+    ScrollView
 } from 'react-native';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
-import { dummyData, COLORS, SIZES, FONTS, icons, images } from '../constants';
-
-const SkeletonViews = ({ label, customContainerStyle, customLabelStyle, onPress }) => {
+const SkeletonViews = () => {
     return (
-        <TouchableOpacity
-            style={{
-                height: 45,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: SIZES.radius,
-                backgroundColor: COLORS.green,
-                ...customContainerStyle
-            }}
-            onPress={onPress}
-        >
-            <Text style={{ color: COLORS.white, ...FONTS.h3, ...customLabelStyle }}>{label}</Text>
-        </TouchableOpacity>
+        <ScrollView
+        style={{ flex: 1, marginTop: `10%` }}
+        contentContainerStyle={{ alignItems: 'center' }}>
+        <SkeletonPlaceholder>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ width: 60, height: 60, borderRadius: 50 }} />
+                <View style={{ marginLeft: 20 }}>
+                    <View style={{ width: 120, height: 20, borderRadius: 4 }} />
+                    <View
+                        style={{ marginTop: 6, width: 80, height: 20, borderRadius: 4 }}
+                    />
+                </View>
+            </View>
+            <View style={{ marginTop: 10, marginBottom: 30 }}>
+                <View style={{ width: 300, height: 20, borderRadius: 4 }} />
+                <View
+                    style={{ marginTop: 6, width: 250, height: 20, borderRadius: 4 }}
+                />
+                <View
+                    style={{ marginTop: 6, width: 350, height: 200, borderRadius: 4 }}
+                />
+            </View>
+        </SkeletonPlaceholder>
+        <SkeletonPlaceholder>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ width: 60, height: 60, borderRadius: 50 }} />
+                <View style={{ marginLeft: 20 }}>
+                    <View style={{ width: 120, height: 20, borderRadius: 4 }} />
+                    <View
+                        style={{ marginTop: 6, width: 80, height: 20, borderRadius: 4 }}
+                    />
+                </View>
+            </View>
+            <View style={{ marginTop: 10, marginBottom: 30 }}>
+                <View style={{ width: 300, height: 20, borderRadius: 4 }} />
+                <View
+                    style={{ marginTop: 6, width: 250, height: 20, borderRadius: 4 }}
+                />
+                <View
+                    style={{ marginTop: 6, width: 350, height: 200, borderRadius: 4 }}
+                />
+            </View>
+        </SkeletonPlaceholder>
+    </ScrollView>
     )
 }
 

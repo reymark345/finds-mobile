@@ -17,6 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS, FONTS } from '../constants';
 import TouchID from 'react-native-touch-id';
 import NetInfo from "@react-native-community/netinfo";
+import SkeletonViews from '../components/SkeletonViews';
 import {
   GoogleSigninButton,
 } from '@react-native-community/google-signin';
@@ -231,23 +232,6 @@ const LoginScreen = ({ navigation }) => {
                 color={GoogleSigninButton.Color.Dark}
                 onPress={() => {
                   googleLogin();
-                  // const hasPin = await hasUserSetPinCode();
-                  // if (fingerprint === true) {
-                  //   googleLogin();
-                  // }
-                  // else if (!hasPin) {
-                  //   console.log("No pin");
-                  //   _showChoosePinLock();
-                  // }
-                  // else if (hasPin && fingerprint === false) {
-                  //   googleLogin();
-                  //   // _showEnterPinLock();
-                  // }
-                  // else {
-                  //   console.log("fingerprintt function");
-                  //   // _showEnterPinLock();
-
-                  // }
                 }
                 }
               />
@@ -290,28 +274,8 @@ const LoginScreen = ({ navigation }) => {
                   />
                 </TouchableOpacity>
               </View>
-              {/* <View>
-                <TouchableOpacity style={{ alignItems: 'center' }} activeOpacity={0.5} onPress={() => _clearPin()}>
-                  <Image
-                    source={require('../assets/fingerprint/f-icon-gray.png')}
-                    style={styles.ImageIconStyle}
-                  />
-                </TouchableOpacity>
-              </View> */}
             </View>
           }
-          {internetCon === false ?
-            <CustomAlert
-              modalVisible={modalVisible}
-              setModalVisible={setModalVisible}
-              title={'Message'}
-              message={'Your device appears to have no internet connectivity. Please check your connection settings and try again'}
-              buttons={[{
-                text: 'Retry',
-                func: () => { checkInternetConnection(); }
-              }]}
-            />
-            : null}
         </ImageBackground>
       }
     </ScrollView>
