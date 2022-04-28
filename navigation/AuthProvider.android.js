@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomAlert from '../components/CustomAlert';
+import SkeletonViews from '../components/SkeletonViews';
 // import { LoginManager, AccessToken } from 'react-native-fbsdk';
 
 export const AuthContext = createContext();
@@ -11,36 +12,58 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  // signOuts = async () => {
-  //   try {
-  //     await GoogleSignin.revokeAccess();
-  //     await GoogleSignin.signOut();
-  //     setUser({ user: null }); // Remember to remove the user from your app's state as well
-  //     await auth().signOut();
-  //   } catch (error) {
-  //     console.error(error);
+  const [loading, setLoading] = useState(true);
 
-  //   }
-  // };
+  React.useEffect(() => {
+    fetchPosts();
+  }, [])
 
-  // const ErrorHandling = (error) => {
-  //   console.log(error);
-  //   return (
-  //     <View style={styles.inputContainer}>
-  //       <CustomAlert
-  //         modalVisible={modalVisible}
-  //         setModalVisible={setModalVisible}
-  //         title={'Message'}
-  //         message={error}
-  //         buttons={[{
-  //           text: 'Ok',
-  //           func: () => { console.log('Yes Pressed') }
-  //         }]}
-  //       />
+  const fetchPosts = async () => {
+    try {
+      const list = [];
 
-  //     </View>
-  //   );
-  // };
+      await firestore()
+        .collection('posts')
+        .orderBy('postTime', 'desc')
+        .get()
+        .then((querySnapshot) => {
+          // console.log('Total Posts: ', querySnapshot.size);
+          querySnapshot.forEach((doc) => {
+            const {
+              userId,
+              post,
+              postImg,
+              postTime,
+              likes,
+              comments,
+            } = doc.data();
+            list.push({
+              id: doc.id,
+              userId,
+              userName: 'Test Name',
+              userImg:
+                'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+              postTime: postTime,
+              post,
+              postImg,
+              liked: false,
+              likes,
+              comments,
+            });
+          });
+        });
+
+      setPosts(list);
+
+      if (loading) {
+        setLoading(false);
+      }
+
+      console.log('Posts: ', posts);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <AuthContext.Provider
@@ -48,6 +71,18 @@ export const AuthProvider = ({ children }) => {
         user,
         setUser,
         googleLogin: async () => {
+
+          <SkeletonViews />
+
+
+          // loading ? (
+          //   <SkeletonViews />
+          // ) : () => {
+          //   console.log("oksssssssssssssssssssssss");
+          // }
+
+
+          // }
 
           try {
             // Get the users ID token
@@ -97,16 +132,15 @@ export const AuthProvider = ({ children }) => {
                   })
               })
               //we need to catch the whole sign up process if it fails too.
-
-
               .catch(error => {
                 console.log('Something went wrong with sign up: ', error);
               });
           } catch (error) {
-            // console.log('Something went wrong with sign up: ', error);
-            // ErrorHandling(error);
+            console.log('Something went wrong with sign up: ', error);
           }
         },
+
+
         logout: async () => {
           try {
             // signOut();
@@ -123,21 +157,11 @@ export const AuthProvider = ({ children }) => {
 
           } catch (e) {
             console.log(e);
-            console.log("sa catch");
-            // AsyncStorage.setItem('userPrivilege','');
-            // await GoogleSignin.revokeAccess();
-            // // await GoogleSignin.signOut();
-            // // AsyncStorage.setItem('userPrivilegePhoto','https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg');
-            // await auth().signOut();
+            console.log("Please contact administrator");
           }
         },
-        // testAlert: async () => {
-        //   console.log("Test alert");
-        //   return (
-        //     <View><Text>fasfasf</Text></View>
-        //   )
-        // }
-      }}>
+      }
+      } >
       {children}
     </AuthContext.Provider >
   );

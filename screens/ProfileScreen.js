@@ -125,7 +125,7 @@ const ProfileScreen = ({ navigation, route }) => {
 
         <View style={styles.userBtnWrapper}>
           <TouchableOpacity style={styles.userBtn} onPress={() => _clearPin()}>
-            <Text style={styles.userBtnTxt}>Clear PIN</Text>
+            <Text style={styles.userBtnTxt}>Update your PIN</Text>
           </TouchableOpacity>
         </View>
 
