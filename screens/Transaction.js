@@ -7,76 +7,75 @@ import {
     SafeAreaView
 } from 'react-native';
 
-import {HeaderBar, TevLabel, TextButton, TransactionHistory} from "../components"
-import { dummyData, COLORS, SIZES, FONTS} from '../constants';
+import { HeaderBar, TevLabel, TextButton, TransactionHistory } from "../components"
+import { COLORS, SIZES, FONTS } from '../constants';
 
-const Transaction = ({route}) => {
+const Transaction = ({ route }) => {
     const [selectedTev, setSelectedTev] = React.useState(null)
 
-    React.useEffect(() =>{
-        const {tev} = route.params
+    React.useEffect(() => {
+        const { tev } = route.params
         setSelectedTev(tev)
     })
 
-    function renderData(){
-        return(
-            <View
-                style={{marginTop:SIZES.padding,
-                marginHorizontal:SIZES.padding,
-                padding:SIZES.padding,
-                borderRadius:SIZES.radius,
-                backgroundColor:COLORS.white,
-                ...styles.shadow
-            }}
-        >
-            <TevLabel
-                icon={selectedTev?.image}
-                tev = {selectedTev?.tev}
-                // code ={selectedTev?.code}
-            />
+    function renderData() {
+        return (
             <View
                 style={{
-                    marginTop:SIZES.padding,
-                    marginBottom:SIZES.padding *1.5,
-                    alignItems:'center',
-                    justifyContent: 'center'
+                    marginTop: SIZES.padding,
+                    marginHorizontal: SIZES.padding,
+                    padding: SIZES.padding,
+                    borderRadius: SIZES.radius,
+                    backgroundColor: COLORS.white,
+                    ...styles.shadow
                 }}
             >
-                {/* <Text style={{...FONTS.h2}}>₱{selectedTev?.wallet.value}{selectedTev?.code}</Text> */}
-                <Text style={{...FONTS.h2,color:`#666`}}>₱{selectedTev?.wallet.value}</Text>
-                <Text style={{color:COLORS.gray, ...FONTS.body4}}>Yr. 2022</Text>
-            </View>
+                <TevLabel
+                    icon={selectedTev?.image}
+                    tev={selectedTev?.tev}
+                />
+                <View
+                    style={{
+                        marginTop: SIZES.padding,
+                        marginBottom: SIZES.padding * 1.5,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Text style={{ ...FONTS.h2, color: `#666` }}>₱{selectedTev?.wallet.value}</Text>
+                    <Text style={{ color: COLORS.gray, ...FONTS.body4 }}>Yr. 2022</Text>
+                </View>
                 <TextButton
                     label="More Details"
                     onPress={() => console.log("Trade")}
-                
+
                 />
-        </View>
+            </View>
 
 
         )
     }
 
-    function renderTransactionHistory(){
-        return(
+    function renderTransactionHistory() {
+        return (
             <TransactionHistory
                 customContainerStyle={{
                     ...styles.shadow
                 }}
                 history={selectedTev?.transactionHistory}
-            
+
             />
         )
     }
 
     return (
-        <SafeAreaView style={{flex:1}}>
+        <SafeAreaView style={{ flex: 1 }}>
             <HeaderBar
                 right={false}
-            
+
             />
             <ScrollView>
-                <View style={{flex:1, paddingBottom:SIZES.padding}}>
+                <View style={{ flex: 1, paddingBottom: SIZES.padding }}>
                     {renderData()}
                     {renderTransactionHistory()}
 
