@@ -10,7 +10,9 @@ export const COLORS = {
     red: "#F9A8BA",
     gray: "#6A6A6A",
     lightGray: "#dbdbdb",
-    lightGray1: "#f5f6fa"
+    lightGray1: "#f5f6fa",
+    purpleSolid: "#6046fc",
+    purpleLiquid: "#6d52f8"
 };
 export const SIZES = {
     // global sizes

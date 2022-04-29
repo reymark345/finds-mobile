@@ -1,109 +1,43 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, FlatList } from 'react-native';
-import {
-  ScrollView,
-  SafeAreaView
-} from '../styles/MessageStyles';
+import { View, Text, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import Timeline from 'react-native-timeline-flatlist'
+import { dummyData, COLORS, SIZES, FONTS, icons, images } from '../constants';
 
 
-import SkeletonPlaceholder from "react-native-skeleton-placeholder";
-const Messages = [
-  {
-    id: '1',
-    userName: 'Jenny Doe',
-    userImg: require('../assets/users/user-3.jpg'),
-    messageTime: '4 mins ago',
-    messageText:
-      'Hey there, this is my test for a post of my social app in React Native.',
-  },
-  {
-    id: '2',
-    userName: 'John Doe',
-    userImg: require('../assets/users/user-1.jpg'),
-    messageTime: '2 hours ago',
-    messageText:
-      'Hey there, this is my test for a post of my social app in React Native.',
-  },
-  {
-    id: '3',
-    userName: 'Ken William',
-    userImg: require('../assets/users/user-4.jpg'),
-    messageTime: '1 hours ago',
-    messageText:
-      'Hey there, this is my test for a post of my social app in React Native.',
-  },
-  {
-    id: '4',
-    userName: 'Selina Paul',
-    userImg: require('../assets/users/user-6.jpg'),
-    messageTime: '1 day ago',
-    messageText:
-      'Hey there, this is my test for a post of my social app in React Native.',
-  },
-  {
-    id: '5',
-    userName: 'Christy Alex',
-    userImg: require('../assets/users/user-7.jpg'),
-    messageTime: '2 days ago',
-    messageText:
-      'Hey there, this is my test for a post of my social app in React Native.',
-  },
-];
 
 const TextBlastScreen = ({ navigation }) => {
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView
-        style={{ flex: 1 }}
-        contentContainerStyle={{ alignItems: 'center' }}>
-        <SkeletonPlaceholder>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View style={{ width: 60, height: 60, borderRadius: 50 }} />
-            <View style={{ marginLeft: 20 }}>
-              <View style={{ width: 120, height: 20, borderRadius: 4 }} />
-              <View
-                style={{ marginTop: 6, width: 80, height: 20, borderRadius: 4 }}
-              />
-            </View>
-          </View>
-          <View style={{ marginTop: 10, marginBottom: 30 }}>
-            <View style={{ width: 300, height: 20, borderRadius: 4 }} />
-            <View
-              style={{ marginTop: 6, width: 250, height: 20, borderRadius: 4 }}
-            />
-            <View
-              style={{ marginTop: 6, width: 350, height: 200, borderRadius: 4 }}
-            />
-          </View>
-        </SkeletonPlaceholder>
-        <SkeletonPlaceholder>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View style={{ width: 60, height: 60, borderRadius: 50 }} />
-            <View style={{ marginLeft: 20 }}>
-              <View style={{ width: 120, height: 20, borderRadius: 4 }} />
-              <View
-                style={{ marginTop: 6, width: 80, height: 20, borderRadius: 4 }}
-              />
-            </View>
-          </View>
-          <View style={{ marginTop: 10, marginBottom: 30 }}>
-            <View style={{ width: 300, height: 20, borderRadius: 4 }} />
-            <View
-              style={{ marginTop: 6, width: 250, height: 20, borderRadius: 4 }}
-            />
-            <View
-              style={{ marginTop: 6, width: 350, height: 200, borderRadius: 4 }}
-            />
-          </View>
-        </SkeletonPlaceholder>
-      </ScrollView>
 
-    </SafeAreaView>
+  const datas = [
+    { time: '09:00', title: 'Incoming', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details', lineColor: '#009688' },
+    { time: '10:45', title: 'Obligate', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details', circleColor: '#009688' },
+    { time: '12:00', title: 'Journal', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details' },
+    { time: '14:00', title: 'Certified', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details' },
+    { time: '16:30', title: 'Check Issued', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details' }
+  ];
+
+  return (
+    <ScrollView >
+      <View style={{ padding: 15 }}><Text style={{ ...FONTS.h4 }}>TEV STATUS </Text></View>
+      <Timeline
+        circleSize={20}
+        circleColor='rgb(20,156,219)'
+        lineColor='rgb(45,156,219)'
+        timeContainerStyle={{ minWidth: 52 }}
+        timeStyle={{ textAlign: 'center', backgroundColor: COLORS.purpleLiquid, color: 'white', padding: 5, borderRadius: 13 }}
+        descriptionStyle={{ color: 'gray' }}
+        options={{
+          style: { padding: 10 }
+        }}
+        isUsingFlatlist={true}
+        data={datas}
+        innerCircle={'dot'}
+      />
+    </ScrollView>
+
   );
 };
-
 export default TextBlastScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
