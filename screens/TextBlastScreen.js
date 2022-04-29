@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Timeline from 'react-native-timeline-flatlist'
+import { dummyData, COLORS, SIZES, FONTS, icons, images } from '../constants';
 
 
 
@@ -16,18 +17,17 @@ const TextBlastScreen = ({ navigation }) => {
   ];
 
   return (
-    <ScrollView padding="5%">
-      <View><Text>TEV STATUS</Text></View>
-
+    <ScrollView >
+      <View style={{ padding: 15 }}><Text style={{ ...FONTS.h4 }}>TEV STATUS </Text></View>
       <Timeline
         circleSize={20}
         circleColor='rgb(20,156,219)'
         lineColor='rgb(45,156,219)'
-        timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
-        timeStyle={{ textAlign: 'center', backgroundColor: '#ff9797', color: 'white', padding: 5, borderRadius: 13 }}
+        timeContainerStyle={{ minWidth: 52 }}
+        timeStyle={{ textAlign: 'center', backgroundColor: COLORS.purpleLiquid, color: 'white', padding: 5, borderRadius: 13 }}
         descriptionStyle={{ color: 'gray' }}
         options={{
-          style: { paddingTop: 5 }
+          style: { padding: 10 }
         }}
         isUsingFlatlist={true}
         data={datas}
@@ -37,7 +37,6 @@ const TextBlastScreen = ({ navigation }) => {
 
   );
 };
-
 export default TextBlastScreen;
 const styles = StyleSheet.create({
   container: {
