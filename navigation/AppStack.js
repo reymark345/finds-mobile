@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import HomeScreen from '../screens/HomeScreen';
 import ChatScreen from '../screens/ChatScreen';
@@ -17,18 +18,27 @@ import Transaction from '../screens/Transaction';
 import NetInfo from "@react-native-community/netinfo";
 import CustomAlert from '../components/CustomAlert';
 import TextBlastScreen from '../screens/TextBlastScreen';
+import SettingsScreen from '../screens/SettingsScreen';
+import CustomDrawer from '../components/CustomDrawer';
+
 
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const Drawer = createDrawerNavigator();
+
 const FeedStack = ({ navigation }) => (
-  <Stack.Navigator
+
+  <Drawer.Navigator
+    drawerContent={props => <CustomDrawer {...props} />}
     screenOptions={{
       headerShown: false
     }}>
+
+
     <Stack.Screen
-      name="FINDS"
+      name="Home"
       component={HomeScreen}
       options={{
         headerTitleAlign: 'center',
@@ -43,20 +53,28 @@ const FeedStack = ({ navigation }) => (
         },
         headerRight: () => (
           <View style={{ marginRight: 10 }}>
-            <FontAwesome5.Button
+            {/* <FontAwesome5.Button
               name="plus"
               size={22}
               backgroundColor="#fff"
               color="#2e64e5"
               onPress={() => navigation.navigate('AddPost')}
-            />
+            /> */}
+            <Ionicons name="arrow-back" size={25} color="#2e64e5" />
           </View>
         ),
       }}
+      drawerIcon
     />
+
+    <Drawer.Screen name="Profile" component={SettingsScreen} />
+    <Drawer.Screen name="Settings" component={SettingsScreen} />
+    <Drawer.Screen name="Transaction" component={ProfileScreen} />
+
+
     <Stack.Screen
       name="AddPost"
-      component={AddPostScreen}
+      component={HomeScreen}
       options={{
         title: '',
         headerTitleAlign: 'center',
@@ -149,7 +167,7 @@ const FeedStack = ({ navigation }) => (
         ),
       }}
     />
-  </Stack.Navigator>
+  </Drawer.Navigator>
 );
 
 const MessageStack = ({ navigation }) => (
