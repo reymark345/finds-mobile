@@ -25,6 +25,7 @@ import PINCode, {
 const ProfileScreen = ({ navigation, route }) => {
   const { user, logout } = useContext(AuthContext);
 
+
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
