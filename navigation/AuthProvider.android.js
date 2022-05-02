@@ -3,20 +3,47 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CustomAlert from '../components/CustomAlert';
 import SkeletonViews from '../components/SkeletonViews';
-// import { LoginManager, AccessToken } from 'react-native-fbsdk';
+import PINCode, {
+  resetPinCodeInternalStates,
+  deleteUserPinCode,
+} from "@haskkor/react-native-pincode";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
     fetchPosts();
   }, [])
+
+  const clearPin = async () => {
+    try {
+      await deleteUserPinCode();
+      await resetPinCodeInternalStates();
+      logout();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      GoogleSignin.configure({});
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      setUser({ user: null });
+      AsyncStorage.setItem('userPrivilege', '');
+      // AsyncStorage.setItem('userPrivilegePhoto','https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg');
+      await auth().signOut();
+      console.log("sa try");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
 
   const fetchPosts = async () => {
     try {
@@ -70,20 +97,17 @@ export const AuthProvider = ({ children }) => {
       value={{
         user,
         setUser,
+        clearPin: clearPin,
+        logout: logout,
         googleLogin: async () => {
 
           <SkeletonViews />
-
-
           // loading ? (
           //   <SkeletonViews />
           // ) : () => {
           //   console.log("oksssssssssssssssssssssss");
           // }
-
-
           // }
-
           try {
             // Get the users ID token
             const Token = await GoogleSignin.signIn();
@@ -93,22 +117,12 @@ export const AuthProvider = ({ children }) => {
 
             // Create a Google credential with the token
             const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-
-            console.log("test");
-            console.log(Token.user.name);
-            console.log(Token.user.photo);
-            console.log(Token.user.email);
-            console.log("Oh naa");
-
             AsyncStorage.setItem('userPrivilege', Token.user.name);
             AsyncStorage.setItem('userPrivilegePhoto', Token.user.photo);
             AsyncStorage.setItem('userPrivilegeEmail', Token.user.email);
 
             // Sign-in the user with the credential
             await auth().signInWithCredential(googleCredential)
-
-
               // Use it only when user Sign's up, 
               // so create different social signup function
               .then(() => {
@@ -137,27 +151,6 @@ export const AuthProvider = ({ children }) => {
               });
           } catch (error) {
             console.log('Something went wrong with sign up: ', error);
-          }
-        },
-
-
-        logout: async () => {
-          try {
-            // signOut();
-            GoogleSignin.configure({});
-            await GoogleSignin.revokeAccess();
-            await GoogleSignin.signOut();
-            setUser({ user: null });
-            AsyncStorage.setItem('userPrivilege', '');
-            // AsyncStorage.setItem('userPrivilegePhoto','https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg');
-            await auth().signOut();
-            console.log("sa try");
-
-
-
-          } catch (e) {
-            console.log(e);
-            console.log("Please contact administrator");
           }
         },
       }
