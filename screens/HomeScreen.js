@@ -64,6 +64,7 @@ const HomeScreen = ({ navigation }) => {
         console.log(hasUserSetPinCode);
         if (fingerprint === true) {
             setPin({ ...pinCodeVisible, showPinLock: false });
+            console.log("Errorrrrrrrrrr");
         }
 
         else if (!hasPin) {
