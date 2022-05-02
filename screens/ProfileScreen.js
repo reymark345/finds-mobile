@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -7,47 +7,54 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  Alert
 } from 'react-native';
 import FormButton from '../components/FormButton';
-import {AuthContext} from '../navigation/AuthProvider';
+import { AuthContext } from '../navigation/AuthProvider';
 
 import firestore from '@react-native-firebase/firestore';
 import PostCard from '../components/PostCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FONTS, COLORS} from '../constants';
+import { FONTS, COLORS } from '../constants';
+import PINCode, {
+  hasUserSetPinCode,
+  resetPinCodeInternalStates,
+  deleteUserPinCode,
+} from "@haskkor/react-native-pincode";
 
-const ProfileScreen = ({navigation, route}) => {
-  const {user, logout} = useContext(AuthContext);
+const ProfileScreen = ({ navigation, route }) => {
+  const { user, logout } = useContext(AuthContext);
+
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
-  const [googleUsername, setState] = useState({GoogleUsername: ''});
-  const [googlePhoto, setPhoto] = useState({GooglePhoto: ''});
-  const [googleEmail, setEmail] = useState({GoogleEmail: ''});
+  const [googleUsername, setState] = useState({ GoogleUsername: '' });
+  const [googlePhoto, setPhoto] = useState({ GooglePhoto: '' });
+  const [googleEmail, setEmail] = useState({ GoogleEmail: '' });
 
   const fetchPosts = async () => {
-    try {    
+    try {
       AsyncStorage.getItem('userPrivilege').then((variable) => {
         if (variable != null) {
-          setState({GoogleUsername: variable})   
+          setState({ GoogleUsername: variable })
         }
-      }); 
+      });
       AsyncStorage.getItem('userPrivilegePhoto').then((varPhoto) => {
         if (varPhoto != null) {
-          setPhoto({GooglePhoto: varPhoto})   
+          setPhoto({ GooglePhoto: varPhoto })
         }
-      }); 
+      });
       AsyncStorage.getItem('userPrivilegeEmail').then((varEmail) => {
         if (varEmail != null) {
           console.log("hall");
           console.log(varEmail);
-          setEmail({GoogleEmail: varEmail})   
+          setEmail({ GoogleEmail: varEmail })
         }
-        else{
+        else {
           console.log("hall");
         }
-      }); 
+      });
       if (loading) {
         setLoading(false);
       }
@@ -56,17 +63,17 @@ const ProfileScreen = ({navigation, route}) => {
     }
   };
 
-  const getUser = async() => {
+  const getUser = async () => {
     await firestore()
-    .collection('users')
-    .doc( route.params ? route.params.userId : user.uid)
-    .get()
-    .then((documentSnapshot) => {
-      if( documentSnapshot.exists ) {
-        console.log('User Data', documentSnapshot.data());
-        setUserData(documentSnapshot.data());
-      }
-    })
+      .collection('users')
+      .doc(route.params ? route.params.userId : user.uid)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log('User Data', documentSnapshot.data());
+          setUserData(documentSnapshot.data());
+        }
+      })
   }
 
   useEffect(() => {
@@ -75,18 +82,33 @@ const ProfileScreen = ({navigation, route}) => {
     navigation.addListener("focus", () => setLoading(!loading));
   }, [navigation, loading]);
 
-  const handleDelete = () => {};
+  const handleDelete = () => { };
+
+  async function _clearPin() {
+    await deleteUserPinCode();
+    await resetPinCodeInternalStates();
+    Alert.alert(null, "You have cleared your pin.", [
+      {
+        title: "Ok",
+        onPress: () => {
+          logout();
+        },
+
+
+      },
+    ]);
+  };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <ScrollView
         style={styles.container}
-        contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}
+        contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
         showsVerticalScrollIndicator={false}>
         <Image
           style={styles.userImg}
-          source={{uri:googlePhoto?.GooglePhoto}}
-          // source={{uri: userData ? userData.userImg || 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg' : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'}}
+          source={{ uri: googlePhoto?.GooglePhoto }}
+        // source={{uri: userData ? userData.userImg || 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg' : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'}}
         />
         <Text style={styles.userName}>{googleUsername?.GoogleUsername}</Text>
         {/* <Text style={styles.userName}>{googleUsername?.GoogleUsername}</Text> */}
@@ -94,11 +116,17 @@ const ProfileScreen = ({navigation, route}) => {
         {/* <Text style={styles.userName}>{userData ? userData.fname || 'Test' : 'Test'} {userData ? userData.lname || 'User' : 'User'}</Text> */}
         {/* <Text>{route.params ? route.params.userId : user.uid}</Text> */}
         <Text style={styles.aboutUser}>
-        {userData ? userData.about || 'No details added.' : ''}
+          {userData ? userData.about || 'No details added.' : ''}
         </Text>
         <View style={styles.userBtnWrapper}>
           <TouchableOpacity style={styles.userBtn} onPress={() => logout()}>
             <Text style={styles.userBtnTxt}>Logout</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.userBtnWrapper}>
+          <TouchableOpacity style={styles.userBtn} onPress={() => _clearPin()}>
+            <Text style={styles.userBtnTxt}>Clear PIN</Text>
           </TouchableOpacity>
         </View>
 
