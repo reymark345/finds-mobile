@@ -57,7 +57,8 @@ const TransactionHistory = ({ customContainerStyle, history }) => {
                 padding: 20,
                 borderRadius: SIZES.radius,
                 backgroundColor: COLORS.white,
-                ...customContainerStyle
+                ...customContainerStyle,
+                marginBottom: SIZES.padding,
             }}
         >
             <Text style={{ ...FONTS.h3 }}>Transaction History</Text>

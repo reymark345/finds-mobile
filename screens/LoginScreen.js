@@ -37,25 +37,24 @@ const LoginScreen = ({ navigation }) => {
     checkInternetConnection();
     TouchID.isSupported()
       .then(biometryType => {
-        if (biometryType === 'TouchID') {
-          setFprint(true);
-          // AsyncStorage.setItem('FingerprintAvailable', true);
-          AsyncStorage.setItem('FingerprintAvailable', JSON.stringify(true))
 
-        } else if (biometryType === 'FaceID') {
-          console.log("supported by IOS ");
-        } else if (biometryType === true) {
+        if (biometryType === true || biometryType === 'TouchID') {
           setFprint(true);
-          // AsyncStorage.setItem('FingerprintAvailable', true);
           AsyncStorage.setItem('FingerprintAvailable', JSON.stringify(true))
-          console.log("supported by Android");
+          console.log("supported by Android1111111111111111");
+        }
+        else if (biometryType === 'FaceID') {
+          console.log("supported by IOS ");
         }
         else {
           setFprint(false);
-          console.log("Not supported");
+          console.log("Not supported33333333333333");
+          console.log(biometryType);
         }
+
       })
       .catch(error => {
+        console.log("WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         console.log(error);
         console.log("Please enable your Fingerprint/touchID to your device");
       });

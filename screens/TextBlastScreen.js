@@ -9,8 +9,8 @@ import { dummyData, COLORS, SIZES, FONTS, icons, images } from '../constants';
 const TextBlastScreen = ({ navigation }) => {
 
   const datas = [
-    { time: '09:00', title: 'Incoming', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details', lineColor: '#009688' },
-    { time: '10:45', title: 'Obligate', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details', circleColor: '#009688' },
+    { time: '09:00', title: 'Incoming', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details', lineColor: '#808080', circleColor: '#808080' },
+    { time: '10:45', title: 'Obligate', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details', circleColor: '#00FF00' },
     { time: '12:00', title: 'Journal', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details' },
     { time: '14:00', title: 'Certified', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details' },
     { time: '16:30', title: 'Check Issued', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details' }
