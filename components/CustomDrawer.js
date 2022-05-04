@@ -15,6 +15,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../navigation/AuthProvider';
+import { COLORS } from '../constants';
 
 const CustomDrawer = props => {
 
@@ -63,13 +64,12 @@ const CustomDrawer = props => {
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView
         {...props}
-        contentContainerStyle={{ backgroundColor: '#8200d6' }}>
+        contentContainerStyle={{ backgroundColor: COLORS.purpleLiquid }}>
         <ImageBackground
-          source={require('../assets/images/menu-bg.jpeg')}
+          source={require('../assets/images/banner.png')}
           style={{ padding: 20 }}>
           <Image
             source={{ uri: googlePhoto?.GooglePhoto }}
-            // source={require('../assets/images/user-profile.jpg')}
             style={{ height: 80, width: 80, borderRadius: 40, marginBottom: 10 }}
           />
           <Text
