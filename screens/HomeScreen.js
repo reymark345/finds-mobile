@@ -30,7 +30,7 @@ const HomeScreen = ({ navigation }) => {
     const [deleted, setDeleted] = useState(false);
     const [trending, setTrending] = React.useState(dummyData.trendingCurrencies)
     const [transactionHistory, setTransactionHistory] = React.useState(dummyData.transactionHistory)
-    const [pinCodeVisible, setPin] = useState({ PINCodeStatus: "choose", showPinLock: false });
+    const [pinCodeVisible, setPin] = useState({ PINCodeStatus: "choose", showPinLock: true });
     const [googlePhoto, setPhoto] = useState({ GooglePhoto: '' });
 
     React.useEffect(() => {
@@ -44,6 +44,7 @@ const HomeScreen = ({ navigation }) => {
         TouchID.isSupported()
             .then(biometryType => {
                 if (biometryType === 'TouchID' || biometryType === true) {
+                    setPin({ showPinLock: false });
                     AsyncStorage.setItem('FingerprintAvailable', JSON.stringify(true))
                 }
             })
