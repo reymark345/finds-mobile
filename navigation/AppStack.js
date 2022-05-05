@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, Image, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import LinearGradient from "react-native-linear-gradient";
 
 import HomeScreen from '../screens/HomeScreen';
 import ChatScreen from '../screens/ChatScreen';
@@ -20,6 +21,8 @@ import CustomAlert from '../components/CustomAlert';
 import TextBlastScreen from '../screens/TextBlastScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import CustomDrawer from '../components/CustomDrawer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { COLORS, FONTS, icons } from "../constants"
 
 
 
@@ -27,6 +30,32 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const Drawer = createDrawerNavigator();
+
+const TabBarCustomButton = ({ children, onPress }) => {
+  return (
+    <TouchableOpacity
+      style={{
+        top: -25,
+        justifyContent: 'center',
+        alignItems: 'center',
+        ...styles.shadow
+      }}
+      onPress={onPress}
+    >
+      <LinearGradient
+        colors={[COLORS.primary, COLORS.secondary]}
+        style={{
+          width: 55,
+          height: 55,
+          borderRadius: 35
+        }}
+      >
+        {children}
+      </LinearGradient>
+
+    </TouchableOpacity>
+  )
+}
 
 const FeedStack = ({ navigation }) => (
 
@@ -265,60 +294,179 @@ const AppStack = () => {
 
     <Tab.Navigator
       screenOptions={{
+        tabBarShowLabel: false,
+        tabBarStyle: [
+          {
+            display: "flex"
+          },
+          null,
+        ],
         headerShown: false
       }}
       tabBarOptions={{
-        activeTintColor: '#2e64e5',
-      }}>
+        showLabel: false,
+        style: {
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          elevation: 0,
+          backgroundColor: COLORS.white,
+          borderTopColor: "transparent",
+          height: 100
+        }
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={FeedStack}
-        options={({ route }) => ({
-          tabBarLabel: 'Home',
-          // tabBarVisible: route.state && route.state.index === 0,
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="home-outline"
-              color={color}
-              size={size}
-            />
-
-          ),
-        })}
-      />
-      <Tab.Screen
-        name="Messages"
-        component={MessageStack}
-        options={({ route }) => ({
-          tabBarVisible: getTabBarVisibility(route),
-          // Or Hide tabbar when push!
-          // https://github.com/react-navigation/react-navigation/issues/7677
-          // tabBarVisible: route.state && route.state.index === 0,
-          // tabBarLabel: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons
-              name="chatbox-ellipses-outline"
-              color={color}
-              size={size}
-            />
-          ),
-        })}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileStack}
         options={{
-          // tabBarLabel: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-outline" color={color} size={size} />
-          ),
+          tabBarIcon: ({ focused }) => (
+            <View style={{
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <Image
+                source={icons.home}
+                resizeMode="contain"
+                style={{
+                  width: 25,
+                  height: 20,
+                  tintColor: focused ? COLORS.
+                    primary : COLORS.black
+                }}
+              />
+              <Text style={{
+                color: focused ? COLORS.
+                  primary : COLORS.black, ...FONTS.body5, width: 35
+              }}
+              >HOME</Text>
+            </View>
+          )
         }}
       />
+      <Tab.Screen
+        name="Portfolio"
+        component={MessageStack}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View style={{
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <Image
+                source={icons.pie_chart}
+                resizeMode="contain"
+                style={{
+                  width: 25,
+                  height: 20,
+                  tintColor: focused ? COLORS.
+                    primary : COLORS.black
+                }}
+              />
+              <Text style={{
+                color: focused ? COLORS.
+                  primary : COLORS.black, ...FONTS.body5, width: 65
+              }}
+              >PORTFOLIO</Text>
+            </View>
+          )
+        }}
+      />
+      <Tab.Screen
+        name="Transaction"
+        component={ProfileStack}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Image
+              source={icons.transaction}
+              resizeMode="contain"
+              style={{
+                width: 25,
+                height: 20,
+                tintColor: COLORS.white
+              }}
+            />
+          ),
+          tabBarButton: (props) => (
+            <TabBarCustomButton
+              {...props}
+            />
+          )
+        }}
 
+      />
+      <Tab.Screen
+        name="Prices"
+        component={ProfileStack}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View style={{
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <Image
+                source={icons.line_graph}
+                resizeMode="contain"
+                style={{
+                  width: 25,
+                  height: 20,
+                  tintColor: focused ? COLORS.
+                    primary : COLORS.black
+                }}
+              />
+              <Text style={{
+                color: focused ? COLORS.
+                  primary : COLORS.black, ...FONTS.body5, width: 40
+              }}
+              >STATS</Text>
+            </View>
+          )
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={ProfileStack}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View style={{
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <Image
+                source={icons.settings}
+                resizeMode="contain"
+                style={{
+                  width: 25,
+                  height: 20,
+                  tintColor: focused ? COLORS.
+                    primary : COLORS.black
+                }}
+              />
+              <Text style={{
+                color: focused ? COLORS.primary : COLORS.black, ...FONTS.body5, width: 60
+              }}
+              >SETTINGS</Text>
+            </View>
+          )
+        }}
+      />
     </Tab.Navigator>
-    // <View>{checkInternetConnection()}</View>
 
   );
 };
+
+const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: COLORS.primary,
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  }
+})
 
 export default AppStack;
