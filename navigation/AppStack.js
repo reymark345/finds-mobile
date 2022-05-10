@@ -35,7 +35,7 @@ const TabBarCustomButton = ({ children, onPress }) => {
   return (
     <TouchableOpacity
       style={{
-        top: -25,
+        top: -30,
         justifyContent: 'center',
         alignItems: 'center',
         ...styles.shadow
@@ -45,8 +45,8 @@ const TabBarCustomButton = ({ children, onPress }) => {
       <LinearGradient
         colors={[COLORS.primary, COLORS.secondary]}
         style={{
-          width: 55,
-          height: 55,
+          width: 60,
+          height: 60,
           borderRadius: 35
         }}
       >
@@ -297,9 +297,10 @@ const AppStack = () => {
         tabBarShowLabel: false,
         tabBarStyle: [
           {
-            display: "flex"
+            display: "flex",
+            height: 60
           },
-          null,
+          null
         ],
         headerShown: false
       }}
@@ -324,7 +325,8 @@ const AppStack = () => {
           tabBarIcon: ({ focused }) => (
             <View style={{
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              width: 60
             }}>
               <Image
                 source={icons.home}
@@ -338,7 +340,7 @@ const AppStack = () => {
               />
               <Text style={{
                 color: focused ? COLORS.
-                  primary : COLORS.black, ...FONTS.body5, width: 35
+                  primary : COLORS.black, ...FONTS.body5
               }}
               >HOME</Text>
             </View>
@@ -352,7 +354,8 @@ const AppStack = () => {
           tabBarIcon: ({ focused }) => (
             <View style={{
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              width: 70
             }}>
               <Image
                 source={icons.pie_chart}
@@ -366,7 +369,7 @@ const AppStack = () => {
               />
               <Text style={{
                 color: focused ? COLORS.
-                  primary : COLORS.black, ...FONTS.body5, width: 65
+                  primary : COLORS.black, ...FONTS.body5
               }}
               >PORTFOLIO</Text>
             </View>
@@ -403,7 +406,8 @@ const AppStack = () => {
           tabBarIcon: ({ focused }) => (
             <View style={{
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              width: 40
             }}>
               <Image
                 source={icons.line_graph}
@@ -416,23 +420,28 @@ const AppStack = () => {
                 }}
               />
               <Text style={{
+
                 color: focused ? COLORS.
-                  primary : COLORS.black, ...FONTS.body5, width: 40
+                  primary : COLORS.black, ...FONTS.body5
               }}
               >STATS</Text>
             </View>
           )
         }}
+
       />
       <Tab.Screen
         name="Settings"
         component={ProfileStack}
         options={{
           tabBarIcon: ({ focused }) => (
-            <View style={{
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 65
+              }}
+            >
               <Image
                 source={icons.settings}
                 resizeMode="contain"
@@ -443,16 +452,16 @@ const AppStack = () => {
                     primary : COLORS.black
                 }}
               />
-              <Text style={{
-                color: focused ? COLORS.primary : COLORS.black, ...FONTS.body5, width: 60
-              }}
-              >SETTINGS</Text>
+              <Text
+                numberOfLines={1}
+                style={{ color: focused ? COLORS.primary : COLORS.black, ...FONTS.body5 }}>
+                SETTINGS
+              </Text>
             </View>
-          )
+          ),
         }}
       />
     </Tab.Navigator>
-
   );
 };
 
