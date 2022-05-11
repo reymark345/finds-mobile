@@ -1,5 +1,5 @@
 export const portfolio = {
-    balance: "12,000.00",
+    balance: "73,580.00",
     changes: "+2.36%",
     date: "December 1, 2022",
 };
