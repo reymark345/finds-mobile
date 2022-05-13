@@ -52,6 +52,8 @@ const HomeScreen = ({ navigation }) => {
                 pinCode();
                 console.log(error);
                 console.log("Please enable your Fingerprint/touchID to your deviceaaaaaaaaaaaaaaaa");
+                navigation.getParent()?.setOptions({ tabBarStyle: { display: "none" } });
+                return () => navigation.getParent()?.setOptions({ tabBarStyle: undefined });
             });
         AsyncStorage.getItem('userPrivilegePhoto').then((varPhoto) => {
             if (varPhoto != null) {
@@ -76,6 +78,7 @@ const HomeScreen = ({ navigation }) => {
     async function _finishProcess() {
         console.log("Alert should pop upaaa");
         setPin({ showPinLock: false });
+        navigation.getParent()?.setOptions({ tabBarStyle: { display: "flex", height: 60 } });
     };
 
     function renderHeader() {
