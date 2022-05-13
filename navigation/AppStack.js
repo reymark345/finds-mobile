@@ -20,6 +20,7 @@ import NetInfo from "@react-native-community/netinfo";
 import CustomAlert from '../components/CustomAlert';
 import TextBlastScreen from '../screens/TextBlastScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import QrScan from '../screens/QrScan';
 import CustomDrawer from '../components/CustomDrawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS, FONTS, icons } from "../constants"
@@ -97,8 +98,9 @@ const FeedStack = ({ navigation }) => (
     />
 
     <Drawer.Screen name="Profile" component={SettingsScreen} />
-    <Drawer.Screen name="Settings" component={SettingsScreen} />
     <Drawer.Screen name="Transaction" component={ProfileScreen} />
+    <Drawer.Screen name="Qr Code" component={QrScan} />
+    <Drawer.Screen name="Settings" component={SettingsScreen} />
 
 
     <Stack.Screen
