@@ -46,6 +46,7 @@ const Transaction = ({ route }) => {
                     <Text style={{ color: COLORS.gray, ...FONTS.body4 }}>Yr. 2022</Text>
                 </View>
                 <TextButton
+                    height={45}
                     label="More Details"
                     onPress={() => console.log("Trade")}
 

@@ -206,6 +206,7 @@ const TevDetail = ({ route, navigation }) => {
                                 <TextButton
                                     key={`option-${option.id}`}
                                     label={option.label}
+
                                     customContainerStyle={{
                                         height: 30,
                                         width: 60,
@@ -276,6 +277,7 @@ const TevDetail = ({ route, navigation }) => {
                     </View>
                 </View>
                 <TextButton
+                    height={45}
                     label="View Status"
                     onPress={() => navigation.navigate("trans", { tev: selectedTev })}
                 />
