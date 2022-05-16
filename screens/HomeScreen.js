@@ -186,9 +186,7 @@ const HomeScreen = ({ navigation }) => {
                             onPress={() => navigation.openDrawer()}
                         >
                             <Image
-                                // source={require('../assets/images/user-profile.jpg')}
                                 source={{ uri: googlePhoto?.GooglePhoto }}
-                                // source={icons.notification_white}
                                 resizeMode="contain"
                                 style={{ height: 30, width: 30, borderRadius: 20 }}
                             />
@@ -231,7 +229,6 @@ const HomeScreen = ({ navigation }) => {
             </View>
         )
     }
-
 
     function renderAlert() {
         return (
@@ -333,76 +330,6 @@ const HomeScreen = ({ navigation }) => {
         fetchPosts();
         setDeleted(false);
     }, [deleted]);
-
-    // const handleDelete = (postId) => {
-    //     Alert.alert(
-    //         'Delete post',
-    //         'Are you sure?',
-    //         [
-    //             {
-    //                 text: 'Cancel',
-    //                 onPress: () => console.log('Cancel Pressed!'),
-    //                 style: 'cancel',
-    //             },
-    //             {
-    //                 text: 'Confirm',
-    //                 onPress: () => deletePost(postId),
-    //             },
-    //         ],
-    //         { cancelable: false },
-    //     );
-    // };
-
-    // const deletePost = (postId) => {
-    //     console.log('Current Post Id: ', postId);
-
-    //     firestore()
-    //         .collection('posts')
-    //         .doc(postId)
-    //         .get()
-    //         .then((documentSnapshot) => {
-    //             if (documentSnapshot.exists) {
-    //                 const { postImg } = documentSnapshot.data();
-
-    //                 if (postImg != null) {
-    //                     const storageRef = storage().refFromURL(postImg);
-    //                     const imageRef = storage().ref(storageRef.fullPath);
-
-    //                     imageRef
-    //                         .delete()
-    //                         .then(() => {
-    //                             console.log(`${postImg} has been deleted successfully.`);
-    //                             deleteFirestoreData(postId);
-    //                         })
-    //                         .catch((e) => {
-    //                             console.log('Error while deleting the image. ', e);
-    //                         });
-    //                     // If the post image is not available
-    //                 } else {
-    //                     deleteFirestoreData(postId);
-    //                 }
-    //             }
-    //         });
-    // };
-
-    // const deleteFirestoreData = (postId) => {
-    //     firestore()
-    //         .collection('posts')
-    //         .doc(postId)
-    //         .delete()
-    //         .then(() => {
-    //             Alert.alert(
-    //                 'Post deleted!',
-    //                 'Your post has been deleted successfully!',
-    //             );
-    //             setDeleted(true);
-    //         })
-    //         .catch((e) => console.log('Error deleting posst.', e));
-    // };
-
-    // const ListHeader = () => {
-    //     return null;
-    // };
     return (
         <SafeAreaView style={{ flex: 1 }}>
             {loading ? (
@@ -433,8 +360,6 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // alignItems: 'center',
-        // justifyContent: 'center'
     },
     Pincontainer: {
         flex: 1,
