@@ -9,8 +9,8 @@ import {
   SafeAreaView
 } from 'react-native';
 
-import { HeaderBar,TextButton} from "../components"
-import {COLORS, SIZES} from '../constants';
+import { HeaderBar, TextButton } from "../components"
+import { COLORS, SIZES } from '../constants';
 
 const QrScan = () => {
   const [scan, setScan] = useState(false);
@@ -29,40 +29,40 @@ const QrScan = () => {
           ...styles.shadow
         }}
       >
-        {scan && 
-        <View>
-        <QRCodeScanner
-        reactivate={true}
-        showMarker={true}
-        onRead={onSuccess}
-        cameraContainerStyle={{ width: 275, borderWidth: 1, borderColor: 'white', alignSelf: 'center', }} cameraStyle={{ width: '97%', alignSelf: 'center', }}
-        bottomContent={
-          <View style={{
-            padding: SIZES.padding,
-            alignItems: "center",
-            justifyContent: "center"
-          }}>
+        {scan &&
+          <View>
+            <QRCodeScanner
+              reactivate={true}
+              showMarker={true}
+              onRead={onSuccess}
+              cameraContainerStyle={{ width: 275, borderWidth: 1, borderColor: 'white', alignSelf: 'center', }} cameraStyle={{ width: '97%', alignSelf: 'center', }}
+              bottomContent={
+                <View style={{
+                  padding: SIZES.padding,
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}>
+                </View>
+              }
+            />
+            <View>
+              <TextButton
+                style={{
+                  alignItems: 'center',
+                }}
+                height={50}
+                label="STOP SCAN"
+                onPress={onStop} />
+            </View>
           </View>
         }
-      />
-      <View>
-        <TextButton
-          style={{
-            alignItems: 'center',
-          }}
-          height={50}
-          label="STOP SCAN"
-          onPress={onStop} />
-      </View>
-      </View>
-      }
         {ScanResult &&
           <View>
             <Text style={styles.textTitle1}>Result !</Text>
             <Text>Type : {result.type}</Text>
             <Text>Result : {result.data}</Text>
             <Text numberOfLines={1}>RawData: {result.rawData}</Text>
-            <View style={{marginTop:20}}>
+            <View style={{ marginTop: 20 }}>
               <TextButton
                 style={{
                   alignItems: 'center',
@@ -72,25 +72,32 @@ const QrScan = () => {
                 onPress={scanAgain} />
             </View>
           </View>
-        }                                   
+        }
         {!scan && !ScanResult &&
-          <View >
-            <Image
-              source={require('../assets/images/qrcode_logo.png')}
-              style={{ padding: 30, height: 350, width: 300 }}
-            />
           <View>
-          <TextButton
-            style={{
-              alignItems: 'center',
-            }}
-            height={50}
-            label="Scan QR Code"
-            onPress={() => setScan(true)} />
-        </View>
+            <View
+              style={{
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                source={require('../assets/images/qrcode_logo.png')}
+                style={{ padding: 30, height: 350, width: 300 }}
+              />
+            </View>
+            <View>
+              <TextButton
+                style={{
+                  alignItems: 'center',
+                }}
+                height={50}
+                width={100}
+                label="Scan QR Code"
+                onPress={() => setScan(true)} />
+            </View>
           </View>
         }
-  </View>
+      </View>
     )
   }
 
