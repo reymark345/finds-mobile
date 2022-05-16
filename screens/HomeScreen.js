@@ -30,8 +30,8 @@ const HomeScreen = ({ navigation }) => {
     const [deleted, setDeleted] = useState(false);
     const [trending, setTrending] = React.useState(dummyData.trendingCurrencies)
     const [transactionHistory, setTransactionHistory] = React.useState(dummyData.transactionHistory)
-    const [fingerprint, setFprint] = useState(false);
     const [pinCodeVisible, setPin] = useState({ PINCodeStatus: "choose", showPinLock: true });
+    const [googlePhoto, setPhoto] = useState({ GooglePhoto: '' });
 
     React.useEffect(() => {
         LogBox.ignoreLogs(['Found screens with the same name nested'])
@@ -41,32 +41,30 @@ const HomeScreen = ({ navigation }) => {
         LogBox.ignoreLogs(['source.uri should not be an empty string'])
         LogBox.ignoreLogs(['Can\'t perform a React state update '])
         LogBox.ignoreLogs(['ViewPropTypes will be removed from React Native.'])
-        pinCode();
-
         TouchID.isSupported()
             .then(biometryType => {
                 if (biometryType === 'TouchID' || biometryType === true) {
-                    setFprint(true);
-                    // AsyncStorage.setItem('FingerprintAvailable', true);
+                    setPin({ showPinLock: false });
                     AsyncStorage.setItem('FingerprintAvailable', JSON.stringify(true))
                 }
             })
             .catch(error => {
+                pinCode();
                 console.log(error);
-                console.log("Please enable your Fingerprint/touchID to your device");
+                console.log("Please enable your Fingerprint/touchID to your deviceaaaaaaaaaaaaaaaa");
+                navigation.getParent()?.setOptions({ tabBarStyle: { display: "none" } });
+                return () => navigation.getParent()?.setOptions({ tabBarStyle: undefined });
             });
-
+        AsyncStorage.getItem('userPrivilegePhoto').then((varPhoto) => {
+            if (varPhoto != null) {
+                setPhoto({ GooglePhoto: varPhoto })
+            }
+        });
     }, [])
 
     async function pinCode() {
         const hasPin = await hasUserSetPinCode();
-        console.log("----------------------------------------------------------ok");
-        console.log(hasUserSetPinCode);
-        if (fingerprint === true) {
-            setPin({ ...pinCodeVisible, showPinLock: false });
-        }
-
-        else if (!hasPin) {
+        if (!hasPin) {
             setPin({ PINCodeStatus: "choose", showPinLock: true });
         }
         else if (hasPin) {
@@ -80,6 +78,7 @@ const HomeScreen = ({ navigation }) => {
     async function _finishProcess() {
         console.log("Alert should pop upaaa");
         setPin({ showPinLock: false });
+        navigation.getParent()?.setOptions({ tabBarStyle: { display: "flex", height: 60 } });
     };
 
     function renderHeader() {
@@ -147,6 +146,31 @@ const HomeScreen = ({ navigation }) => {
                         style={{
                             marginTop: SIZES.padding * 1,
                             width: "100%",
+                            alignItems: "flex-start",
+                            paddingHorizontal: SIZES.padding
+                        }}
+                    >
+                        <TouchableOpacity
+
+                            style={{
+                                width: 20,
+                                height: 20,
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}
+                            onPress={() => console.log("Notification Pressed")}
+                        >
+                            <Image
+                                source={icons.notification_white}
+                                resizeMode="contain"
+                                style={{ flex: 1 }}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    <View
+                        style={{
+                            marginTop: -20,
+                            width: "100%",
                             alignItems: "flex-end",
                             paddingHorizontal: SIZES.padding
                         }}
@@ -159,16 +183,18 @@ const HomeScreen = ({ navigation }) => {
                                 alignItems: "center",
                                 justifyContent: "center"
                             }}
-
-                            onPress={() => console.log("Notification on pressed")}
+                            onPress={() => navigation.openDrawer()}
                         >
                             <Image
-                                source={icons.notification_white}
+                                // source={require('../assets/images/user-profile.jpg')}
+                                source={{ uri: googlePhoto?.GooglePhoto }}
+                                // source={icons.notification_white}
                                 resizeMode="contain"
-                                style={{ flex: 1 }}
+                                style={{ height: 30, width: 30, borderRadius: 20 }}
                             />
                         </TouchableOpacity>
                     </View>
+
                     {/* Balance */}
                     <View
                         style={{
@@ -251,7 +277,6 @@ const HomeScreen = ({ navigation }) => {
             <TransactionHistory
                 customContainerStyle={{ ...styles.shadow }}
                 history={transactionHistory}
-
             />
         )
     }
