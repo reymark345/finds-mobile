@@ -263,8 +263,8 @@ const styles = StyleSheet.create({
   LogoImageStyle: {
     padding: 10,
     margin: 5,
-    height: 265,
-    width: 240,
+    height: 200,
+    width: 200,
     marginTop: 80,
     alignItems: 'center',
     resizeMode: 'stretch',
