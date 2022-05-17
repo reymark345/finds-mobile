@@ -7,8 +7,8 @@ import {
     SafeAreaView
 } from 'react-native';
 
-import { HeaderBar, TevLabel, TextButton, TransactionHistory } from "../components"
-import { COLORS, SIZES, FONTS } from '../constants';
+import { HeaderBar, TevLabel, TextButton, TransactionHistory } from "../../components"
+import { COLORS, SIZES, FONTS } from '../../constants';
 
 const Transaction = ({ route }) => {
     const [selectedTev, setSelectedTev] = React.useState(null)

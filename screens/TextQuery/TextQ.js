@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Timeline from 'react-native-timeline-flatlist'
-import { dummyData, COLORS, SIZES, FONTS, icons, images } from '../constants';
+import { dummyData, COLORS, SIZES, FONTS, icons, images } from '../../constants';
 
 
 
-const TextBlastScreen = ({ navigation }) => {
+const TextQ = ({ navigation }) => {
 
   const datas = [
     { time: '09:00', title: 'Incoming', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details', lineColor: '#808080', circleColor: '#808080' },
@@ -37,7 +37,7 @@ const TextBlastScreen = ({ navigation }) => {
 
   );
 };
-export default TextBlastScreen;
+export default TextQ;
 const styles = StyleSheet.create({
   container: {
     flex: 1,

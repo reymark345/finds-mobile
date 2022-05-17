@@ -9,13 +9,13 @@ import {
   SafeAreaView,
   Alert
 } from 'react-native';
-import FormButton from '../components/FormButton';
-import { AuthContext } from '../navigation/AuthProvider';
+import FormButton from '../../components/FormButton';
+import { AuthContext } from '../../navigation/AuthProvider';
 
 import firestore from '@react-native-firebase/firestore';
-import PostCard from '../components/PostCard';
+import PostCard from '../../components/PostCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FONTS, COLORS } from '../constants';
+import { FONTS, COLORS } from '../../constants';
 import PINCode, {
   hasUserSetPinCode,
   resetPinCodeInternalStates,

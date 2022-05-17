@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { dummyData, COLORS, SIZES, FONTS, icons, images } from '../constants';
+import { dummyData, COLORS, SIZES, FONTS, icons, images } from '../../constants';
 
 const SettingsScreen = ({ navigation }) => {
   return (

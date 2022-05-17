@@ -9,18 +9,18 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import LinearGradient from "react-native-linear-gradient";
 
 import HomeScreen from '../screens/HomeScreen';
-import ChatScreen from '../screens/ChatScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import AddPostScreen from '../screens/AddPostScreen';
-import MessagesScreen from '../screens/MessagesScreen';
-import EditProfileScreen from '../screens/EditProfileScreen';
-import TevDetail from '../screens/TevDetail';
-import Transaction from '../screens/Transaction';
+import ChatScreen from '../screens/oldScreens/ChatScreen';
+import ProfileScreen from '../screens/oldScreens/ProfileScreen';
+import AddPostScreen from '../screens/oldScreens/AddPostScreen';
+import MessagesScreen from '../screens/oldScreens/MessagesScreen';
+import EditProfileScreen from '../screens/oldScreens/EditProfileScreen';
+import TevDetail from '../screens/Tev/TevDetail';
+import Transaction from '../screens/Transaction/Transaction';
 import NetInfo from "@react-native-community/netinfo";
 import CustomAlert from '../components/CustomAlert';
-import TextBlastScreen from '../screens/TextBlastScreen';
-import SettingsScreen from '../screens/SettingsScreen';
-import QrScan from '../screens/QrScan';
+import TextBlastScreen from '../screens/TextQuery/TextQ';
+import SettingsScreen from '../screens/SettingsScreen/SettingsScreen';
+import QrScan from '../screens/Qrcode/QrScan';
 import CustomDrawer from '../components/CustomDrawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS, FONTS, icons } from "../constants"

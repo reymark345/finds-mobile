@@ -1,6 +1,6 @@
 import React, { Component, Fragment, useState } from 'react';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import styles from './scanStyle'
+import styles from '../scanStyle'
 import {
   Text,
   View,
@@ -9,8 +9,8 @@ import {
   SafeAreaView
 } from 'react-native';
 
-import { HeaderBar, TextButton } from "../components"
-import { COLORS, SIZES } from '../constants';
+import { HeaderBar, TextButton } from "../../components"
+import { COLORS, SIZES } from '../../constants';
 
 const QrScan = () => {
   const [scan, setScan] = useState(false);
@@ -81,7 +81,7 @@ const QrScan = () => {
               }}
             >
               <Image
-                source={require('../assets/images/qrcode_logo.png')}
+                source={require('../../assets/images/qrcode_logo.png')}
                 style={{ padding: 30, height: 350, width: 300 }}
               />
             </View>
