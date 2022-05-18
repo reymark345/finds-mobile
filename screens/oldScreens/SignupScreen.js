@@ -1,16 +1,16 @@
-import React, {useContext, useState} from 'react';
-import {View, Text, TouchableOpacity, Platform, StyleSheet} from 'react-native';
-import FormInput from '../components/FormInput';
-import FormButton from '../components/FormButton';
-import SocialButton from '../components/SocialButton';
-import {AuthContext} from '../navigation/AuthProvider';
+import React, { useContext, useState } from 'react';
+import { View, Text, TouchableOpacity, Platform, StyleSheet } from 'react-native';
+import FormInput from '../../components/FormInput';
+import FormButton from '../../components/FormButton';
+import SocialButton from '../../components/SocialButton';
+import { AuthContext } from '../../navigation/AuthProvider';
 
-const SignupScreen = ({navigation}) => {
+const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
 
-  const {register} = useContext(AuthContext);
+  const { register } = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
@@ -52,12 +52,12 @@ const SignupScreen = ({navigation}) => {
           By registering, you confirm that you accept our{' '}
         </Text>
         <TouchableOpacity onPress={() => alert('Terms Clicked!')}>
-          <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
+          <Text style={[styles.color_textPrivate, { color: '#e88832' }]}>
             Terms of service
           </Text>
         </TouchableOpacity>
         <Text style={styles.color_textPrivate}> and </Text>
-        <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
+        <Text style={[styles.color_textPrivate, { color: '#e88832' }]}>
           Privacy Policy
         </Text>
       </View>
@@ -71,13 +71,13 @@ const SignupScreen = ({navigation}) => {
             backgroundColor="#e6eaf4"
             onPress={() => {}}
           /> */}
-    
+
           <SocialButton
             buttonTitle="Sign Up with Google"
             btnType="google"
             color="#de4d41"
             backgroundColor="#f5e7ea"
-            onPress={() => {}}
+            onPress={() => { }}
           />
         </View>
       ) : null}

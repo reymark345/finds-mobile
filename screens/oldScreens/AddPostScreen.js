@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -21,12 +21,11 @@ import {
   SubmitBtn,
   SubmitBtnText,
   StatusWrapper,
-} from '../styles/AddPost';
-
-import { AuthContext } from '../navigation/AuthProvider';
+} from '../../styles/AddPost';
+import { AuthContext } from '../../navigation/AuthProvider';
 
 const AddPostScreen = () => {
-  const {user, logout} = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -63,37 +62,37 @@ const AddPostScreen = () => {
     console.log('Post: ', post);
 
     firestore()
-    .collection('posts')
-    .add({
-      userId: user.uid,
-      post: post,
-      postImg: imageUrl,
-      postTime: firestore.Timestamp.fromDate(new Date()),
-      likes: null,
-      comments: null,
-    })
-    .then(() => {
-      console.log('Post Added!');
-      Alert.alert(
-        'Post published!',
-        'Your post has been published Successfully!',
-      );
-      setPost(null);
-    })
-    .catch((error) => {
-      console.log('Something went wrong with added post to firestore.', error);
-    });
+      .collection('posts')
+      .add({
+        userId: user.uid,
+        post: post,
+        postImg: imageUrl,
+        postTime: firestore.Timestamp.fromDate(new Date()),
+        likes: null,
+        comments: null,
+      })
+      .then(() => {
+        console.log('Post Added!');
+        Alert.alert(
+          'Post published!',
+          'Your post has been published Successfully!',
+        );
+        setPost(null);
+      })
+      .catch((error) => {
+        console.log('Something went wrong with added post to firestore.', error);
+      });
   }
 
   const uploadImage = async () => {
-    if( image == null ) {
+    if (image == null) {
       return null;
     }
     const uploadUri = image;
     let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
 
     // Add timestamp to File Name
-    const extension = filename.split('.').pop(); 
+    const extension = filename.split('.').pop();
     const name = filename.split('.').slice(0, -1).join('.');
     filename = name + Date.now() + '.' + extension;
 
@@ -111,7 +110,7 @@ const AddPostScreen = () => {
 
       setTransferred(
         Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
-          100,
+        100,
       );
     });
 
@@ -139,7 +138,7 @@ const AddPostScreen = () => {
   return (
     <View style={styles.container}>
       <InputWrapper>
-        {image != null ? <AddImage source={{uri: image}} /> : null}
+        {image != null ? <AddImage source={{ uri: image }} /> : null}
 
         <InputField
           placeholder="What's on your mind?"

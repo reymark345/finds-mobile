@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
-import SignupScreen from '../screens/SignupScreen';
+import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import SignupScreen from '../screens/oldScreens/SignupScreen';
 import LoginScreen from '../screens/LoginScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
 
@@ -26,15 +26,15 @@ const AuthStack = () => {
         setIsFirstLaunch(false);
       }
     }); // Add some error handling, also you can simply do setIsFirstLaunch(null)
-  
+
     GoogleSignin.configure({
-      webClientId: '975277778696-gj22nbrvrpn1jqba6sptvtn6fmgkpaqq.apps.googleusercontent.com',           
+      webClientId: '975277778696-gj22nbrvrpn1jqba6sptvtn6fmgkpaqq.apps.googleusercontent.com',
     });
 
     // GoogleSignin.configure({
     //   webClientId: '456417943958-vvv1tbu6oo9oo47ddamhehtq809g9bpm.apps.googleusercontent.com',
     // });
-  
+
   }, []);
 
   if (isFirstLaunch === null) {
@@ -46,25 +46,25 @@ const AuthStack = () => {
   }
 
   return (
-    <Stack.Navigator 
-    screenOptions={{
-      headerShown: false
-    }}
-    initialRouteName={routeName}>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false
+      }}
+      initialRouteName={routeName}>
       <Stack.Screen
         name="Onboarding"
         component={OnboardingScreen}
-        options={{header: () => null}}
+        options={{ header: () => null }}
       />
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{header: () => null}}
+        options={{ header: () => null }}
       />
       <Stack.Screen
         name="Signup"
         component={SignupScreen}
-        options={({navigation}) => ({
+        options={({ navigation }) => ({
           title: '',
           headerStyle: {
             backgroundColor: '#f9fafd',
@@ -72,8 +72,8 @@ const AuthStack = () => {
             elevation: 0,
           },
           headerLeft: () => (
-            <View style={{marginLeft: 10}}>
-              <FontAwesome.Button 
+            <View style={{ marginLeft: 10 }}>
+              <FontAwesome.Button
                 name="long-arrow-left"
                 size={25}
                 backgroundColor="#f9fafd"

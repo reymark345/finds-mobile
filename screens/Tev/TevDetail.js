@@ -10,13 +10,13 @@ import {
     LogBox
 } from 'react-native';
 
-import { HeaderBar, PriceAlert, TevLabel, TextButton } from "../components"
-import { dummyData, COLORS, SIZES, FONTS, icons } from '../constants';
+import { HeaderBar, PriceAlert, TevLabel, TextButton } from "../../components"
+import { dummyData, COLORS, SIZES, FONTS, icons } from '../../constants';
 import { VictoryScatter, VictoryLine, VictoryChart, VictoryAxis } from 'victory-native'
 
 // import  {VictoryCustomTheme} from "../styles"
 
-import VictoryCustomTheme from "../styles/VictoryCustomTheme"
+import VictoryCustomTheme from "../../styles/VictoryCustomTheme"
 
 const TevDetail = ({ route, navigation }) => {
 

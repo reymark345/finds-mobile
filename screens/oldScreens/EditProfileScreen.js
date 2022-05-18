@@ -1,4 +1,4 @@
-import React, {useEffect, useContext, useState} from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import {
   View,
   Text,
@@ -13,73 +13,72 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FormButton from '../components/FormButton';
+import FormButton from '../../components/FormButton';
 
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
-
-import {AuthContext} from '../navigation/AuthProvider';
+import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 
 const EditProfileScreen = () => {
-  const {user, logout} = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
   const [userData, setUserData] = useState(null);
 
-  const getUser = async() => {
+  const getUser = async () => {
     const currentUser = await firestore()
-    .collection('users')
-    .doc(user.uid)
-    .get()
-    .then((documentSnapshot) => {
-      if( documentSnapshot.exists ) {
-        console.log('User Data', documentSnapshot.data());
-        setUserData(documentSnapshot.data());
-      }
-    })
+      .collection('users')
+      .doc(user.uid)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log('User Data', documentSnapshot.data());
+          setUserData(documentSnapshot.data());
+        }
+      })
   }
 
-  const handleUpdate = async() => {
+  const handleUpdate = async () => {
     let imgUrl = await uploadImage();
 
-    if( imgUrl == null && userData.userImg ) {
+    if (imgUrl == null && userData.userImg) {
       imgUrl = userData.userImg;
     }
 
     firestore()
-    .collection('users')
-    .doc(user.uid)
-    .update({
-      fname: userData.fname,
-      lname: userData.lname,
-      about: userData.about,
-      phone: userData.phone,
-      country: userData.country,
-      city: userData.city,
-      userImg: imgUrl,
-    })
-    .then(() => {
-      console.log('User Updated!');
-      Alert.alert(
-        'Profile Updated!',
-        'Your profile has been updated successfully.'
-      );
-    })
+      .collection('users')
+      .doc(user.uid)
+      .update({
+        fname: userData.fname,
+        lname: userData.lname,
+        about: userData.about,
+        phone: userData.phone,
+        country: userData.country,
+        city: userData.city,
+        userImg: imgUrl,
+      })
+      .then(() => {
+        console.log('User Updated!');
+        Alert.alert(
+          'Profile Updated!',
+          'Your profile has been updated successfully.'
+        );
+      })
   }
 
   const uploadImage = async () => {
-    if( image == null ) {
+    if (image == null) {
       return null;
     }
     const uploadUri = image;
     let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
 
     // Add timestamp to File Name
-    const extension = filename.split('.').pop(); 
+    const extension = filename.split('.').pop();
     const name = filename.split('.').slice(0, -1).join('.');
     filename = name + Date.now() + '.' + extension;
 
@@ -97,7 +96,7 @@ const EditProfileScreen = () => {
 
       setTransferred(
         Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
-          100,
+        100,
       );
     });
 
@@ -156,7 +155,7 @@ const EditProfileScreen = () => {
 
   renderInner = () => (
     <View style={styles.panel}>
-      <View style={{alignItems: 'center'}}>
+      <View style={{ alignItems: 'center' }}>
         <Text style={styles.panelTitle}>Upload Photo</Text>
         <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
       </View>
@@ -205,7 +204,7 @@ const EditProfileScreen = () => {
           margin: 20,
           opacity: Animated.add(0.1, Animated.multiply(this.fall, 1.0)),
         }}>
-        <View style={{alignItems: 'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <TouchableOpacity onPress={() => this.bs.current.snapTo(0)}>
             <View
               style={{
@@ -220,12 +219,12 @@ const EditProfileScreen = () => {
                   uri: image
                     ? image
                     : userData
-                    ? userData.userImg ||
+                      ? userData.userImg ||
                       'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'
-                    : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+                      : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
                 }}
-                style={{height: 100, width: 100}}
-                imageStyle={{borderRadius: 15}}>
+                style={{ height: 100, width: 100 }}
+                imageStyle={{ borderRadius: 15 }}>
                 <View
                   style={{
                     flex: 1,
@@ -249,7 +248,7 @@ const EditProfileScreen = () => {
               </ImageBackground>
             </View>
           </TouchableOpacity>
-          <Text style={{marginTop: 10, fontSize: 18, fontWeight: 'bold'}}>
+          <Text style={{ marginTop: 10, fontSize: 18, fontWeight: 'bold' }}>
             {userData ? userData.fname : ''} {userData ? userData.lname : ''}
           </Text>
           {/* <Text>{user.uid}</Text> */}
@@ -262,7 +261,7 @@ const EditProfileScreen = () => {
             placeholderTextColor="#666666"
             autoCorrect={false}
             value={userData ? userData.fname : ''}
-            onChangeText={(txt) => setUserData({...userData, fname: txt})}
+            onChangeText={(txt) => setUserData({ ...userData, fname: txt })}
             style={styles.textInput}
           />
         </View>
@@ -272,7 +271,7 @@ const EditProfileScreen = () => {
             placeholder="Last Name"
             placeholderTextColor="#666666"
             value={userData ? userData.lname : ''}
-            onChangeText={(txt) => setUserData({...userData, lname: txt})}
+            onChangeText={(txt) => setUserData({ ...userData, lname: txt })}
             autoCorrect={false}
             style={styles.textInput}
           />
@@ -285,9 +284,9 @@ const EditProfileScreen = () => {
             placeholder="About Me"
             placeholderTextColor="#666666"
             value={userData ? userData.about : ''}
-            onChangeText={(txt) => setUserData({...userData, about: txt})}
+            onChangeText={(txt) => setUserData({ ...userData, about: txt })}
             autoCorrect={true}
-            style={[styles.textInput, {height: 40}]}
+            style={[styles.textInput, { height: 40 }]}
           />
         </View>
         <View style={styles.action}>
@@ -298,7 +297,7 @@ const EditProfileScreen = () => {
             keyboardType="number-pad"
             autoCorrect={false}
             value={userData ? userData.phone : ''}
-            onChangeText={(txt) => setUserData({...userData, phone: txt})}
+            onChangeText={(txt) => setUserData({ ...userData, phone: txt })}
             style={styles.textInput}
           />
         </View>
@@ -310,7 +309,7 @@ const EditProfileScreen = () => {
             placeholderTextColor="#666666"
             autoCorrect={false}
             value={userData ? userData.country : ''}
-            onChangeText={(txt) => setUserData({...userData, country: txt})}
+            onChangeText={(txt) => setUserData({ ...userData, country: txt })}
             style={styles.textInput}
           />
         </View>
@@ -325,7 +324,7 @@ const EditProfileScreen = () => {
             placeholderTextColor="#666666"
             autoCorrect={false}
             value={userData ? userData.city : ''}
-            onChangeText={(txt) => setUserData({...userData, city: txt})}
+            onChangeText={(txt) => setUserData({ ...userData, city: txt })}
             style={styles.textInput}
           />
         </View>
@@ -358,7 +357,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#FFFFFF',
     shadowColor: '#333333',
-    shadowOffset: {width: -1, height: -3},
+    shadowOffset: { width: -1, height: -3 },
     shadowRadius: 2,
     shadowOpacity: 0.4,
     paddingTop: 20,
