@@ -41,7 +41,7 @@ const LoginScreen = ({ navigation }) => {
         if (biometryType === true || biometryType === 'TouchID') {
           setFprint(true);
           AsyncStorage.setItem('FingerprintAvailable', JSON.stringify(true))
-          console.log("supported by Android1111111111111111");
+          console.log("supported by Android11");
         }
         else if (biometryType === 'FaceID') {
           console.log("supported by IOS ");
@@ -143,7 +143,7 @@ const LoginScreen = ({ navigation }) => {
     <ScrollView style={styles.container} >
       <ImageBackground source={require('../assets/images/login/login-background.png')} style={styles.backgroundImage}   >
         <View style={{ alignItems: 'center' }}>
-          <Image source={require('../assets/images/login/finds-logo.png')} style={styles.LogoImageStyle}></Image>
+          <Image source={require('../assets/images/login/findsLogo.png')} style={styles.LogoImageStyle}></Image>
         </View>
         <Text style={{ ...FONTS.h3, color: COLORS.white }}>{state?.username}</Text>
         <View style={{ marginTop: `30%`, alignItems: 'center' }}>

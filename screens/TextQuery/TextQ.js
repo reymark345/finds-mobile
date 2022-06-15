@@ -9,11 +9,11 @@ import { dummyData, COLORS, SIZES, FONTS, icons, images } from '../../constants'
 const TextQ = ({ navigation }) => {
 
   const datas = [
-    { time: '09:00', title: 'Incoming', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details', lineColor: '#808080', circleColor: '#808080' },
-    { time: '10:45', title: 'Obligate', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details', circleColor: '#00FF00' },
-    { time: '12:00', title: 'Journal', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details' },
-    { time: '14:00', title: 'Certified', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details' },
-    { time: '16:30', title: 'Check Issued', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details' }
+    { time: '09:00', title: 'Incoming - September 01, 2022', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details', circleColor: '#3ab54a', circleColor: '#3ab54a' , icon: require('../../assets/icons/checks.png') },
+    { time: '10:45', title: 'Obligate - October 03, 2022', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details', circleColor: '#3ab54a' , icon: require('../../assets/icons/checks.png')},
+    { time: '12:00', title: 'Journal - October 21, 2022', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details', circleColor: '#3ab54a' , icon: require('../../assets/icons/checks.png') },
+    { time: '14:00', title: 'Certified - October 22, 2022', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details', lineColor: '#808080', circleColor: '#808080' },
+    { time: '16:30', title: 'Check Issued - November 22, 2022', description: 'Details details details details Details details details details Details details details details Details details details details Details details details details', lineColor: '#808080', circleColor: '#808080'}
   ];
 
   return (
@@ -31,7 +31,8 @@ const TextQ = ({ navigation }) => {
         }}
         isUsingFlatlist={true}
         data={datas}
-        innerCircle={'dot'}
+        innerCircle={'icon'}
+        
       />
     </ScrollView>
 
