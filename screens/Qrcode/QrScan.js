@@ -6,7 +6,8 @@ import {
   View,
   Image,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
+  Alert
 } from 'react-native';
 
 import { HeaderBar, TextButton } from "../../components"
@@ -109,7 +110,24 @@ const QrScan = () => {
 
   onSuccess = (e) => {
     const check = e.data.substring(0, 4);
-    console.log('scanned data' + check);
+    fetch('http://172.31.243.160/testAcrud/backend/insert.php',{
+      method: 'POST',
+      headers: {
+        'Accept' : 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        type: e.type,
+        data: e.data,
+      })
+
+    }).then((response) =>response.json())
+      .then((responseJson) => {
+        Alert.alert(responseJson);
+      }).catch((error) => {
+        onsole.error(error);
+      });
+
     setResult(e);
     setScan(false);
     setScanResult(true);
@@ -119,7 +137,7 @@ const QrScan = () => {
       //   .openURL(e.data)
       //   .catch(err => console.error('An error occured', err));
     } else {
-      setResult(e);
+      // setResult(e);
       // setScan(false);
       // setScanResult(true);
     }
